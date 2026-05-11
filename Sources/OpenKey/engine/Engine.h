@@ -180,6 +180,7 @@ extern int vRememberCode;
  * Turn off Vietnamese when typing in another language.
  */
 extern int vOtherLanguage;
+extern int vCurrentLangIsEn;
 
 /**
  * 0: No; 1: Yes

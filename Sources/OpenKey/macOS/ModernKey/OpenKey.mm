@@ -10,7 +10,6 @@
 #import <Foundation/Foundation.h>
 #import "Engine.h"
 #import "AppDelegate.h"
-#import "ViewController.h"
 
 #define FRONT_APP [[NSWorkspace sharedWorkspace] frontmostApplication].bundleIdentifier
 #define OTHER_CONTROL_KEY (_flag & kCGEventFlagMaskCommand) || (_flag & kCGEventFlagMaskControl) || \
@@ -40,7 +39,6 @@ NSDictionary *keyStringToKeyCodeMap = @{
     @",": @43, @"<": @43, @".": @47, @">": @47, @"/": @44, @"?": @44
 };
 
-extern ViewController* viewController;
 
 extern AppDelegate* appDelegate;
 extern int vSendKeyStepByStep;
@@ -651,22 +649,8 @@ extern "C" {
         }
 
         //if "turn off Vietnamese when in other language" mode on
-        if(vOtherLanguage){
-            TISInputSourceRef isource = TISCopyCurrentKeyboardInputSource();
-            if ( isource != NULL )
-            {
-                CFArrayRef languages = (CFArrayRef) TISGetInputSourceProperty(isource, kTISPropertyInputSourceLanguages);
-                
-                if (CFArrayGetCount(languages) > 0) {
-                    CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
-                    NSString *currentLanguage = (__bridge NSString *)langRef;
-                    if(![currentLanguage isLike:@"en"]){
-                        return event;
-                    }
-                    CFRelease(langRef);
-                    CFRelease(isource);
-                }
-            }
+        if (vOtherLanguage && !vCurrentLangIsEn) {
+            return event;
         }
         
         //handle keyboard
