@@ -1483,7 +1483,7 @@ void vKeyHandleEvent(const vKeyEvent& event,
 
         insertState(data, _isCaps); //save state
         
-        if (!IS_SPECIALKEY(data) || tempDisableKey) { //do nothing
+        if (!IS_SPECIALKEY(data) || (tempDisableKey && !vFreeMark)) { //do nothing
             if (vQuickTelex && IS_QUICK_TELEX_KEY(data)) {
                 handleQuickTelex(data, _isCaps);
                 return;
