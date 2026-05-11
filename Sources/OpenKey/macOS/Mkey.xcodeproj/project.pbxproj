@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		232EDA5921F1B33E0085D362 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 232EDA5821F1B33E0085D362 /* AppDelegate.m */; };
-		232EDA5E21F1B33F0085D362 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 232EDA5D21F1B33F0085D362 /* Assets.xcassets */; };
 		232EDA6421F1B33F0085D362 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 232EDA6321F1B33F0085D362 /* main.m */; };
 		233C4A6E231F923D00DD7052 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233C4A6D231F923D00DD7052 /* AppKit.framework */; };
 		233C4A70231F937900DD7052 /* ConvertTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 233C4A6F231F937900DD7052 /* ConvertTool.cpp */; };
@@ -20,7 +19,6 @@
 		2389467D21FDDB920030A13B /* OpenKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2389467C21FDDB920030A13B /* OpenKeyManager.m */; };
 		238AF97122042EC600AEFA17 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 238AF97022042EC600AEFA17 /* Icon.icns */; };
 		23963B5022040C720097189E /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23963B4F22040C720097189E /* ServiceManagement.framework */; };
-		23CA6D1722F0439100804D6E /* MyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CA6D1622F0439100804D6E /* MyTextField.m */; };
 		23E2E49D2314FD3A006CCC3E /* Macro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2E4952314FD3A006CCC3E /* Macro.cpp */; };
 		23E2E49E2314FD3A006CCC3E /* SmartSwitchKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2E4982314FD3A006CCC3E /* SmartSwitchKey.cpp */; };
 		23E2E49F2314FD3A006CCC3E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2E49A2314FD3A006CCC3E /* Engine.cpp */; };
@@ -45,7 +43,6 @@
 		232EDA5421F1B33E0085D362 /* Mkey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mkey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		232EDA5721F1B33E0085D362 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		232EDA5821F1B33E0085D362 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		232EDA5D21F1B33F0085D362 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		232EDA6221F1B33F0085D362 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		232EDA6321F1B33F0085D362 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		232EDA6521F1B33F0085D362 /* ModernKey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ModernKey.entitlements; sourceTree = "<group>"; };
@@ -74,8 +71,6 @@
 		238AF97022042EC600AEFA17 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		23963B4F22040C720097189E /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		23A984BE220ED07E000914A2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		23CA6D1522F0439100804D6E /* MyTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTextField.h; sourceTree = "<group>"; };
-		23CA6D1622F0439100804D6E /* MyTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTextField.m; sourceTree = "<group>"; };
 		23E2E4942314FD3A006CCC3E /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		23E2E4952314FD3A006CCC3E /* Macro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Macro.cpp; sourceTree = "<group>"; };
 		23E2E4962314FD3A006CCC3E /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataType.h; sourceTree = "<group>"; };
@@ -143,14 +138,11 @@
 				23F512832336386200397988 /* MJAccessibilityUtils.m */,
 				232EDA5721F1B33E0085D362 /* AppDelegate.h */,
 				232EDA5821F1B33E0085D362 /* AppDelegate.m */,
-				232EDA5D21F1B33F0085D362 /* Assets.xcassets */,
 				232EDA6221F1B33F0085D362 /* Info.plist */,
 				232EDA6321F1B33F0085D362 /* main.m */,
 				232EDA6521F1B33F0085D362 /* ModernKey.entitlements */,
 				2389467E21FDDC3F0030A13B /* OpenKeyManager.h */,
 				2389467C21FDDB920030A13B /* OpenKeyManager.m */,
-				23CA6D1522F0439100804D6E /* MyTextField.h */,
-				23CA6D1622F0439100804D6E /* MyTextField.m */,
 				2371AAEE22FA85B200CA1B57 /* OpenKey.mm */,
 			);
 			path = ModernKey;
@@ -279,7 +271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				238AF97122042EC600AEFA17 /* Icon.icns in Resources */,
-				232EDA5E21F1B33F0085D362 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +286,6 @@
 				23F512852336386200397988 /* MJAccessibilityUtils.m in Sources */,
 				2389467D21FDDB920030A13B /* OpenKeyManager.m in Sources */,
 				23E2E4A02314FD3A006CCC3E /* Vietnamese.cpp in Sources */,
-				23CA6D1722F0439100804D6E /* MyTextField.m in Sources */,
 				232EDA6421F1B33F0085D362 /* main.m in Sources */,
 				2371AAEF22FA85B200CA1B57 /* OpenKey.mm in Sources */,
 				23E2E49D2314FD3A006CCC3E /* Macro.cpp in Sources */,
