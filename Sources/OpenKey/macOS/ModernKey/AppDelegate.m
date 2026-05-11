@@ -44,7 +44,7 @@ int vQuickEndConsonant = 0;
 int vRememberCode = 1;
 int vOtherLanguage = 1;
 int vCurrentLangIsEn = 1;
-int vTempOffOpenKey = 0;
+int vTempOffMkey = 0;
 int vShowIconOnDock = 0;
 int vPerformLayoutCompat = 0;
 int vFixChromiumBrowser = 0;
@@ -154,8 +154,14 @@ int vFixChromiumBrowser = 0;
 }
 
 -(void)setRunOnStartup:(BOOL)val {
-    CFStringRef appId = (__bridge CFStringRef)@"com.mantrandev.MkeyHelper";
-    SMLoginItemSetEnabled(appId, val);
+    if (@available(macOS 13.0, *)) {
+        SMAppService *service = [SMAppService mainAppService];
+        NSError *error = nil;
+        if (val)
+            [service registerAndReturnError:&error];
+        else
+            [service unregisterAndReturnError:&error];
+    }
 }
 
 -(void)setGrayIcon:(BOOL)val {
