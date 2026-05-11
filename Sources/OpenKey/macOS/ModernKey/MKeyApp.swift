@@ -18,7 +18,7 @@ struct MKeyApp: App {
                 .environmentObject(state)
         } label: {
             Text(state.isVietnamese ? "V" : "E")
-                .font(.system(size: 18, weight: .semibold))
+                .font(.system(size: 20, weight: .bold))
         }
         .menuBarExtraStyle(.menu)
     }
