@@ -15,7 +15,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Yêu cầu
 
-macOS 12.0+. Cần cấp quyền Accessibility:  
+macOS 13.0+. Cần cấp quyền Accessibility:  
 *System Settings → Privacy & Security → Accessibility* → bật `Mkey`.
 
 ## Cài đặt
