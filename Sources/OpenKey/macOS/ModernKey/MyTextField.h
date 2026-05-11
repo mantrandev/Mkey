@@ -2,8 +2,8 @@
 //  MyTextField.h
 //  OpenKey
 //
-//  Created by Tuyen on 7/30/19.
-//  Copyright © 2019 Tuyen Mai. All rights reserved.
+//  Created by mantrandev on 7/30/19.
+//  Copyright © mantrandev. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

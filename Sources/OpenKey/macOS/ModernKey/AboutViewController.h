@@ -2,8 +2,8 @@
 //  AboutViewController.h
 //  OpenKey
 //
-//  Created by Tuyen on 2/15/19.
-//  Copyright © 2019 Tuyen Mai. All rights reserved.
+//  Created by mantrandev on 2/15/19.
+//  Copyright © mantrandev. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

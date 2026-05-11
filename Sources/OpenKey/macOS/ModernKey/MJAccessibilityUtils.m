@@ -3,7 +3,7 @@
 //  OpenKey
 //
 //  Created by Nguyen Tan Thong on 18/9/19.
-//  Copyright © 2019 Tuyen Mai. All rights reserved.
+//  Copyright © mantrandev. All rights reserved.
 //
 //  Source: https://github.com/Hammerspoon/hammerspoon/blob/master/Hammerspoon/MJAccessibilityUtils.m
 //  License: MIT
