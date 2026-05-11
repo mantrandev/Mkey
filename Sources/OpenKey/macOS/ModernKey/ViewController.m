@@ -25,6 +25,9 @@ extern int vShowIconOnDock;
 extern int vAutoCapsMacro;
 extern int vFixChromiumBrowser;
 extern int vPerformLayoutCompat;
+extern int vQuickStartConsonant;
+extern int vQuickEndConsonant;
+extern int vOtherLanguage;
 
 @implementation ViewController {
     __weak IBOutlet NSButton *CustomSwitchCommand;

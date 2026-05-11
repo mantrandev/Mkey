@@ -136,7 +136,6 @@ extern AppDelegate* appDelegate;
     convertToolHotKey &= (~0x100);
     convertToolHotKey |= val << 8;
     [[NSUserDefaults standardUserDefaults] setInteger:convertToolHotKey forKey:@"convertToolHotKey"];
-    [appDelegate setQuickConvertString];
 }
 
 - (IBAction)onSOption:(NSButton *)sender {
@@ -144,7 +143,6 @@ extern AppDelegate* appDelegate;
     convertToolHotKey &= (~0x200);
     convertToolHotKey |= val << 9;
     [[NSUserDefaults standardUserDefaults] setInteger:convertToolHotKey forKey:@"convertToolHotKey"];
-    [appDelegate setQuickConvertString];
 }
 
 - (IBAction)onSCommand:(NSButton *)sender {
@@ -152,7 +150,6 @@ extern AppDelegate* appDelegate;
     convertToolHotKey &= (~0x400);
     convertToolHotKey |= val << 10;
     [[NSUserDefaults standardUserDefaults] setInteger:convertToolHotKey forKey:@"convertToolHotKey"];
-    [appDelegate setQuickConvertString];
 }
 
 - (IBAction)onSShift:(NSButton *)sender {
@@ -160,7 +157,6 @@ extern AppDelegate* appDelegate;
     convertToolHotKey &= (~0x800);
     convertToolHotKey |= val << 11;
     [[NSUserDefaults standardUserDefaults] setInteger:convertToolHotKey forKey:@"convertToolHotKey"];
-    [appDelegate setQuickConvertString];
 }
 
 -(void)onMyTextFieldKeyChange:(unsigned short)keyCode character:(unsigned short)character {
@@ -169,7 +165,6 @@ extern AppDelegate* appDelegate;
     convertToolHotKey &= 0x00FFFFFF;
     convertToolHotKey |= ((unsigned int)character<<24);
     [[NSUserDefaults standardUserDefaults] setInteger:convertToolHotKey forKey:@"convertToolHotKey"];
-    [appDelegate setQuickConvertString];
 }
 
 - (IBAction)onConvertButton:(id)sender {
