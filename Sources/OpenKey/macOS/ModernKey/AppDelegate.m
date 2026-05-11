@@ -62,14 +62,15 @@ int vFixChromiumBrowser = 0;
 
 -(void)askPermission {
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Mkey cần bạn cấp quyền để có thể hoạt động!"];
-    [alert setInformativeText:@"Vui lòng chạy lại ứng dụng sau khi cấp quyền."];
-    [alert addButtonWithTitle:@"Không"];
-    [alert addButtonWithTitle:@"Cấp quyền"];
+    [alert setMessageText:@"Mkey cần quyền Accessibility"];
+    [alert setInformativeText:@"Vào System Settings → Privacy & Security → Accessibility → bật Mkey.\n\nNhấn \"Mở Settings\" để đi thẳng đến đây."];
+    [alert addButtonWithTitle:@"Mở Settings"];
+    [alert addButtonWithTitle:@"Để sau"];
     [alert.window makeKeyAndOrderFront:nil];
     [alert.window setLevel:NSStatusWindowLevel];
-    if ([alert runModal] == 1001) {
-        MJAccessibilityOpenPanel();
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
+        NSURL *url = [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"];
+        [[NSWorkspace sharedWorkspace] openURL:url];
     }
     [NSApp terminate:0];
 }
@@ -110,8 +111,8 @@ int vFixChromiumBrowser = 0;
 
 -(void)createStatusBarMenu {
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    statusItem.button.image = [NSImage imageNamed:@"Status"];
-    statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
+    statusItem.button.title = @"V";
+    statusItem.button.font = [NSFont systemFontOfSize:16 weight:NSFontWeightSemibold];
 
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
@@ -169,18 +170,8 @@ int vFixChromiumBrowser = 0;
 
 -(void)fillData {
     NSInteger intInputMethod = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputMethod"];
-    NSInteger grayIcon = [[NSUserDefaults standardUserDefaults] integerForKey:@"GrayIcon"];
-    if (intInputMethod == 1) {
-        [menuInputMethod setState:NSControlStateValueOn];
-        statusItem.button.image = [NSImage imageNamed:@"Status"];
-        [statusItem.button.image setTemplate:grayIcon ? YES : NO];
-        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
-    } else {
-        [menuInputMethod setState:NSControlStateValueOff];
-        statusItem.button.image = [NSImage imageNamed:@"StatusEng"];
-        [statusItem.button.image setTemplate:grayIcon ? YES : NO];
-        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlightedEng"];
-    }
+    statusItem.button.title = (intInputMethod == 1) ? @"V" : @"E";
+    [menuInputMethod setState:(intInputMethod == 1) ? NSControlStateValueOn : NSControlStateValueOff];
     vLanguage = (int)intInputMethod;
 
     NSInteger intInputType = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputType"];
