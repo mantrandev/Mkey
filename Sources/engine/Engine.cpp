@@ -142,6 +142,15 @@ void* vKeyInit() {
     return &HookState;
 }
 
+bool hasBufferModification() {
+    for (Byte idx = 0; idx < _index; idx++) {
+        if (TypingWord[idx] & (TONE_MASK | TONEW_MASK | MARK_MASK)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool isWordBreak(const vKeyEvent& event, const vKeyEventState& state, const Uint16& data) {
     if (event == vKeyEvent::Mouse)
         return true;
@@ -1485,7 +1494,7 @@ void vKeyHandleEvent(const vKeyEvent& event,
 
         insertState(data, _isCaps); //save state
         
-        if (!IS_SPECIALKEY(data) || (tempDisableKey && !vFreeMark)) { //do nothing
+        if (!IS_SPECIALKEY(data) || (tempDisableKey && !vFreeMark && !hasBufferModification())) { //do nothing
             if (vQuickTelex && IS_QUICK_TELEX_KEY(data)) {
                 handleQuickTelex(data, _isCaps);
                 return;
