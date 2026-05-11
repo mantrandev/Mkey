@@ -9,6 +9,10 @@
 /Sources/OpenKey/win32/OpenKey/OpenKey/x64/Release
 /Sources/OpenKey/win32/OpenKey/OpenKeyUpdate/x64/Release
 
+# macOS
+.DS_Store
+**/.DS_Store
+
 # Build output
 build/
 
