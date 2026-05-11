@@ -20,7 +20,12 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Yêu cầu
 
-macOS 13.0+. Cần cấp quyền Accessibility:  
+macOS 13.0+.
+
+**Gatekeeper:** Vì app chưa được notarize, cần bỏ chặn thủ công sau khi cài:  
+*System Settings → Privacy & Security* → tìm `Mkey` → bấm **Open Anyway**.
+
+**Accessibility:** Cấp quyền để app hoạt động:  
 *System Settings → Privacy & Security → Accessibility* → bật `Mkey`.
 
 ## Cài đặt
