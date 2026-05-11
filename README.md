@@ -36,7 +36,7 @@ macOS 13.0+.
 
 ## Build
 
-Mở `Sources/OpenKey/macOS/Mkey.xcodeproj`, chọn scheme `Mkey`, build.
+Mở `Sources/macOS/Mkey.xcodeproj`, chọn scheme `Mkey`, build.
 
 - **Debug:** bundle ID `com.mantrandev.mkey.dev`
 - **Release:** bundle ID `com.mantrandev.mkey`

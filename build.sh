@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PROJECT="Sources/OpenKey/macOS/Mkey.xcodeproj"
+PROJECT="Sources/macOS/Mkey.xcodeproj"
 SCHEME="Mkey"
 DERIVED="build/DerivedData"
 APP_PATH="$DERIVED/Build/Products/Release/Mkey.app"
