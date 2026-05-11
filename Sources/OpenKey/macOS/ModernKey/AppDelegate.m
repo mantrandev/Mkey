@@ -58,7 +58,6 @@ int vFixChromiumBrowser = 0;
     NSMenuItem *menuInputMethod;
     NSMenuItem *mnuTelex;
     NSMenuItem *mnuVNI;
-    NSMenuItem *mnuUnicode;
 }
 
 -(void)askPermission {
@@ -122,14 +121,10 @@ int vFixChromiumBrowser = 0;
                                   keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
 
-    NSMenuItem *menuInputType = [theMenu addItemWithTitle:@"Kiểu gõ" action:nil keyEquivalent:@""];
-    [self setInputTypeMenu:menuInputType];
-
-    [theMenu addItem:[NSMenuItem separatorItem]];
-
-    mnuUnicode = [theMenu addItemWithTitle:@"Unicode" action:nil keyEquivalent:@""];
-    mnuUnicode.tag = 0;
-    [mnuUnicode setState:NSControlStateValueOn];
+    mnuTelex = [theMenu addItemWithTitle:@"Telex" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
+    mnuTelex.tag = 0;
+    mnuVNI = [theMenu addItemWithTitle:@"VNI" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
+    mnuVNI.tag = 1;
 
     [theMenu addItem:[NSMenuItem separatorItem]];
 
@@ -171,16 +166,6 @@ int vFixChromiumBrowser = 0;
 }
 
 #pragma mark - Menu data
-
--(void)setInputTypeMenu:(NSMenuItem *)parent {
-    NSMenu *sub = [[NSMenu alloc] initWithTitle:@""];
-    [sub setAutoenablesItems:NO];
-    mnuTelex = [sub addItemWithTitle:@"Telex" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
-    mnuTelex.tag = 0;
-    mnuVNI = [sub addItemWithTitle:@"VNI" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
-    mnuVNI.tag = 1;
-    [theMenu setSubmenu:sub forItem:parent];
-}
 
 -(void)fillData {
     NSInteger intInputMethod = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputMethod"];
