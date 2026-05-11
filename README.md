@@ -10,8 +10,6 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 - **Kiểu gõ:** Telex, VNI (mặc định: VNI)
 - **Bảng mã:** Unicode (precomposed)
-- **Gõ tắt (Macro):** không giới hạn ký tự
-- **Quick Telex:** `cc=ch`, `gg=gi`, `kk=kh`, `nn=ng`, `qq=qu`, `pp=ph`, `tt=th`
 - **Đặt dấu oà uý** (mặc định bật)
 - **Chạy cùng macOS**
 - **Phím tắt chuyển ngôn ngữ:** `Cmd + Space` (mặc định)
