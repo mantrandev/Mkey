@@ -12,12 +12,8 @@
 #import "MyTextField.h"
 
 extern AppDelegate* appDelegate;
-extern void OnSpellCheckingChanged(void);
-
 ViewController* viewController;
 extern int vFreeMark;
-extern int vCheckSpelling;
-extern int vUseModernOrthography;
 extern int vSwitchKeyStatus;
 extern int vQuickTelex;
 extern int vRestoreIfWrongSpelling;
@@ -25,15 +21,6 @@ extern int vFixRecommendBrowser;
 extern int vUseMacro;
 extern int vUseMacroInEnglishMode;
 extern int vSendKeyStepByStep;
-extern int vUseSmartSwitchKey;
-extern int vUpperCaseFirstChar;
-extern int vTempOffSpelling;
-extern int vAllowConsonantZFWJ;
-extern int vQuickStartConsonant;
-extern int vQuickEndConsonant;
-extern int vRememberCode;
-extern int vOtherLanguage;
-extern int vTempOffOpenKey;
 extern int vShowIconOnDock;
 extern int vAutoCapsMacro;
 extern int vFixChromiumBrowser;
@@ -64,8 +51,9 @@ extern int vPerformLayoutCompat;
     self.viewParent.frame = parentRect;
     
     //set correct tabgroup
-    tabviews = [NSArray arrayWithObjects:self.tabviewPrimary, self.tabviewMacro, self.tabviewSystem, self.tabviewInfo, nil];
-    tabbuttons = [NSArray arrayWithObjects:self.tabbuttonPrimary, self.tabbuttonMacro, self.tabbuttonSystem, self.tabbuttonInfo, nil];
+    tabviews = [NSArray arrayWithObjects:self.tabviewPrimary, self.tabviewMacro, self.tabviewSystem, nil];
+    tabbuttons = [NSArray arrayWithObjects:self.tabbuttonPrimary, self.tabbuttonMacro, self.tabbuttonSystem, nil];
+    self.tabbuttonInfo.hidden = YES;
     tabViewRect = self.tabviewPrimary.frame;
     for (NSBox* b in tabviews) {
         b.frame = tabViewRect;
@@ -73,7 +61,7 @@ extern int vPerformLayoutCompat;
     
     [self showTab:0];
     
-    NSArray* inputTypeData = [[NSArray alloc] initWithObjects:@"Telex", @"VNI", @"Simple Telex 1", @"Simple Telex 2", nil];
+    NSArray* inputTypeData = [[NSArray alloc] initWithObjects:@"Telex", @"VNI", nil];
     NSArray* codeData = [OpenKeyManager getTableCodes];
     
     //preset data
@@ -83,21 +71,24 @@ extern int vPerformLayoutCompat;
     [self.popupCode removeAllItems];
     [self.popupCode addItemsWithTitles:codeData];
     
+    // hide removed options — storyboard outlets kept to avoid connection errors
+    self.CheckSpellingButton.hidden = YES;
+    self.UseModernOrthography.hidden = YES;
+    self.UpperCaseFirstChar.hidden = YES;
+    self.AutoRememberSwitchKey.hidden = YES;
+    self.RememberTableCode.hidden = YES;
+    self.TempOffOpenKey.hidden = YES;
+    self.RestoreIfInvalidWord.hidden = YES;
+    self.AllowZWJF.hidden = YES;
+    self.TempOffSpellChecking.hidden = YES;
+
     [self initKey];
-    
     [self fillData];
-    
-    // set version info
-    self.VersionInfo.stringValue = [NSString stringWithFormat:@"Phiên bản %@ (build %@) - Ngày cập nhật %@",
-    [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"],
-    [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleVersion"],
-    [OpenKeyManager getBuildDate]] ;
 }
 
 - (void)viewDidAppear {
     [super viewDidAppear];
-    NSString* str = @"OpenKey %@ - Bộ gõ Tiếng Việt";
-    self.view.window.title = [NSString stringWithFormat:str, [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"]];
+    self.view.window.title = @"Mkey";
 }
 
 - (void)viewWillAppear {
@@ -168,19 +159,6 @@ extern int vPerformLayoutCompat;
     vFreeMark = (int)val;
 }
 
-- (IBAction)onModernOrthography:(NSButton *)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"ModernOrthography"];
-    vUseModernOrthography = (int)val;
-}
-
-- (IBAction)onCheckSpelling:(NSButton *)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"Spelling"];
-    vCheckSpelling = (int)val;
-    [self.RestoreIfInvalidWord setEnabled:val];
-    [self.AllowZWJF setEnabled:val];
-    [self.TempOffSpellChecking setEnabled:val];
-    OnSpellCheckingChanged();
-}
 
 - (IBAction)onShowUIOnStartup:(NSButton *)sender {
     [self setCustomValue:sender keyToSet:@"ShowUIOnStartup"];
@@ -201,20 +179,6 @@ extern int vPerformLayoutCompat;
     vQuickTelex = (int)val;
 }
 
-- (IBAction)onRestoreIfInvalidWord:(id)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"RestoreIfInvalidWord"];
-    vRestoreIfWrongSpelling = (int)val;
-}
-
-- (IBAction)omTempOffSpellChecking:(id)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"vTempOffSpelling"];
-    vTempOffSpelling = (int)val;
-}
-
-- (IBAction)onAllowZFWJ:(id)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"vAllowConsonantZFWJ"];
-    vAllowConsonantZFWJ = (int)val;
-}
 
 - (IBAction)onFixRecommendBrowser:(id)sender {
     NSInteger val = [self setCustomValue:sender keyToSet:@"FixRecommendBrowser"];
@@ -301,15 +265,6 @@ extern int vPerformLayoutCompat;
     vUseMacroInEnglishMode = (int)val;
 }
 
-- (IBAction)onAutoRememberSwitchKey:(NSButton *)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"UseSmartSwitchKey"];
-    vUseSmartSwitchKey = (int)val;
-}
-
-- (IBAction)onUpperCaseFirstChar:(NSButton *)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"UpperCaseFirstChar"];
-    vUpperCaseFirstChar = (int)val;
-}
 - (IBAction)onQuickStartConsonant:(id)sender {
     NSInteger val = [self setCustomValue:sender keyToSet:@"vQuickStartConsonant"];
     vQuickStartConsonant = (int)val;
@@ -320,15 +275,6 @@ extern int vPerformLayoutCompat;
     vQuickEndConsonant = (int)val;
 }
 
-- (IBAction)onTempOffOpenKeyByHotKey:(id)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"vTempOffOpenKey"];
-    vTempOffOpenKey = (int)val;
-}
-
-- (IBAction)onRememberTableCode:(id)sender {
-    NSInteger val = [self setCustomValue:sender keyToSet:@"vRememberCode"];
-    vRememberCode = (int)val;
-}
 - (IBAction)onOtherLanguage:(id)sender {
     
     NSInteger val = [self setCustomValue:sender keyToSet:@"vOtherLanguage"];
@@ -386,80 +332,47 @@ extern int vPerformLayoutCompat;
     
     NSInteger freeMark = [[NSUserDefaults standardUserDefaults] integerForKey:@"FreeMark"];
     self.FreeMarkButton.state = freeMark ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    NSInteger useModernOrthography = [[NSUserDefaults standardUserDefaults] integerForKey:@"ModernOrthography"];
-    self.UseModernOrthography.state = useModernOrthography ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    NSInteger spelling = [[NSUserDefaults standardUserDefaults] integerForKey:@"Spelling"];
-    self.CheckSpellingButton.state = spelling ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger runOnStartup = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
     self.RunOnStartupButton.state = runOnStartup ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger useGrayIcon = [[NSUserDefaults standardUserDefaults] integerForKey:@"GrayIcon"];
     self.UseGrayIcon.state = useGrayIcon ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger quicTelex = [[NSUserDefaults standardUserDefaults] integerForKey:@"QuickTelex"];
     self.QuickTelex.state = quicTelex ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    NSInteger restoreIfInvalidWord = [[NSUserDefaults standardUserDefaults] integerForKey:@"RestoreIfInvalidWord"];
-    self.RestoreIfInvalidWord.state = restoreIfInvalidWord ? NSControlStateValueOn : NSControlStateValueOff;
-    [self.RestoreIfInvalidWord setEnabled:spelling];
-    
-    NSInteger tempOffSpelling = [[NSUserDefaults standardUserDefaults] integerForKey:@"vTempOffSpelling"];
-    self.TempOffSpellChecking.state = tempOffSpelling ? NSControlStateValueOn : NSControlStateValueOff;
-    [self.TempOffSpellChecking setEnabled:spelling];
-    
-    NSInteger allowZFWJ = [[NSUserDefaults standardUserDefaults] integerForKey:@"vAllowConsonantZFWJ"];
-    self.AllowZWJF.state = allowZFWJ ? NSControlStateValueOn : NSControlStateValueOff;
-    [self.AllowZWJF setEnabled:spelling];
-    
+
     NSInteger fixRecommendBrowser = [[NSUserDefaults standardUserDefaults] integerForKey:@"FixRecommendBrowser"];
     self.FixRecommendBrowser.state = fixRecommendBrowser ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger useMacro = [[NSUserDefaults standardUserDefaults] integerForKey:@"UseMacro"];
     self.UseMacro.state = useMacro ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger useMacroInEnglish = [[NSUserDefaults standardUserDefaults] integerForKey:@"UseMacroInEnglishMode"];
     self.UseMacroInEnglishMode.state = useMacroInEnglish ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger sendKeySbS = [[NSUserDefaults standardUserDefaults] integerForKey:@"SendKeyStepByStep"];
     self.SendKeyStepByStep.state = sendKeySbS ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    NSInteger useSmartSwitchKey = [[NSUserDefaults standardUserDefaults] integerForKey:@"UseSmartSwitchKey"];
-    self.AutoRememberSwitchKey.state = useSmartSwitchKey ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    NSInteger upperCaseFirstChar = [[NSUserDefaults standardUserDefaults] integerForKey:@"UpperCaseFirstChar"];
-    self.UpperCaseFirstChar.state = upperCaseFirstChar ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger quickStartConsonant = [[NSUserDefaults standardUserDefaults] integerForKey:@"vQuickStartConsonant"];
     self.QuickStartConsonant.state = quickStartConsonant ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     NSInteger quickEndConsonant = [[NSUserDefaults standardUserDefaults] integerForKey:@"vQuickEndConsonant"];
     self.QuickEndConsonant.state = quickEndConsonant ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vRememberCode"];
-    self.RememberTableCode.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vOtherLanguage"];
     self.OtherLanguage.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vTempOffOpenKey"];
-    self.TempOffOpenKey.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vAutoCapsMacro"];
     self.AutoCapsMacro.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
+
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
     self.ShowIconOnDock.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    value = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-    self.CheckNewVersionOnStartup.state = value ? NSControlStateValueOff :NSControlStateValueOn;
-    
+
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vFixChromiumBrowser"];
     self.FixChromiumBrowser.state = value ? NSControlStateValueOn : NSControlStateValueOff;
     self.FixChromiumBrowser.enabled = fixRecommendBrowser ? YES : NO;
-    
+
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vPerformLayoutCompat"];
     self.PerformLayoutCompat.state = value ? NSControlStateValueOn : NSControlStateValueOff;
     
@@ -474,49 +387,6 @@ extern int vPerformLayoutCompat;
 
 - (IBAction)onOK:(id)sender {
     [self.view.window close];
-}
-
-- (IBAction)onDefaultConfig:(id)sender {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Bạn có chắc chắn muốn thiết lập lại cấu hình mặc định?"];
-    [alert addButtonWithTitle:@"Có"];
-    [alert addButtonWithTitle:@"Không"];
-    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == 1000) {
-            [appDelegate loadDefaultConfig];
-            [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"ShowUIOnStartup"];
-            self.ShowUIButton.state = NSControlStateValueOff;
-            
-            [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"RunOnStartup"];
-            self.RunOnStartupButton.state = NSControlStateValueOn;
-        }
-    }];
-}
-
-- (IBAction)onHomePageLink:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"https://open-key.org"]];
-}
-
-- (IBAction)onFanpageLink:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"https://www.facebook.com/OpenKeyVN"]];
-}
-
-- (IBAction)onEmailLink:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"mailto:maivutuyen.91@gmail.com"]];
-}
-
-- (IBAction)onSourceCode:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"https://github.com/tuyenvm/OpenKey"]];
-}
-
-- (IBAction)onCheckNewVersionButton:(id)sender {
-    self.CheckNewVersionButton.title = @"Đang kiểm tra...";
-    self.CheckNewVersionButton.enabled = false;
-    
-    [OpenKeyManager checkNewVersion:self.view.window callbackFunc:^{
-        self.CheckNewVersionButton.enabled = true;
-        self.CheckNewVersionButton.title = @"Kiểm tra bản mới...";
-    }];
 }
 
 @end
