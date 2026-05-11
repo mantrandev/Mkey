@@ -10,13 +10,21 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 - **Quick Telex:** `cc=ch`, `gg=gi`, `kk=kh`, `nn=ng`, `qq=qu`, `pp=ph`, `tt=th`
 - **Đặt dấu oà uý** (mặc định bật)
 - **Chạy cùng macOS**
-- **Phím tắt chuyển ngôn ngữ** tùy chỉnh
+- **Phím tắt chuyển ngôn ngữ:** `Cmd + Space` (mặc định)
 - **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
 
 ## Yêu cầu
 
 macOS 12.0+. Cần cấp quyền Accessibility:  
 *System Settings → Privacy & Security → Accessibility* → bật `Mkey`.
+
+## Cài đặt
+
+1. Mở `Mkey.dmg`
+2. Kéo `Mkey.app` vào thư mục `Applications`
+3. Mở `Mkey` — hệ thống sẽ yêu cầu cấp quyền Accessibility
+4. Vào *System Settings → Privacy & Security → Accessibility* → bật `Mkey`
+5. Mở lại `Mkey`
 
 ## Build
 
