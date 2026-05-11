@@ -186,7 +186,7 @@ extern int vCurrentLangIsEn;
  * 0: No; 1: Yes
  * Temporarily turn off OpenKey  by hot key (Command on mac, Alt on Windows and Linux)
  */
-extern int vTempOffOpenKey;
+extern int vTempOffMkey;
 
 /**
  * Call this function first to receive data pointer

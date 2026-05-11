@@ -83,7 +83,7 @@ extern "C" {
     
     NSString* _frontMostApp = @"UnknownApp";
     
-    void OpenKeyInit() {
+    void MKeyInit() {
         //load saved data
         vFreeMark = 0;//(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"FreeMark"];
         LOAD_DATA(vCodeTable, CodeTable); if (vCodeTable < 0) vCodeTable = 0;
@@ -105,7 +105,7 @@ extern "C" {
         LOAD_DATA(vQuickStartConsonant, vQuickStartConsonant);
         LOAD_DATA(vRememberCode, vRememberCode);
         LOAD_DATA(vOtherLanguage, vOtherLanguage);
-        LOAD_DATA(vTempOffOpenKey, vTempOffOpenKey);
+        LOAD_DATA(vTempOffMkey, vTempOffMkey);
         
         LOAD_DATA(vFixChromiumBrowser, vFixChromiumBrowser);
         
@@ -573,7 +573,7 @@ extern "C" {
      * MAIN HOOK entry, very important function.
      * MAIN Callback.
      */
-    CGEventRef OpenKeyCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
+    CGEventRef MKeyCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
         //dont handle my event
         if (CGEventGetIntegerValueField(event, kCGEventSourceStateID) == CGEventSourceGetSourceStateID(myEventSource)) {
             return event;
@@ -610,7 +610,7 @@ extern "C" {
                     _hasJustUsedHotKey = true;
                     return NULL;
                 }
-                if (vTempOffOpenKey && !_hasJustUsedHotKey && _lastFlag & kCGEventFlagMaskCommand) {
+                if (vTempOffMkey && !_hasJustUsedHotKey && _lastFlag & kCGEventFlagMaskCommand) {
                     vTempOffEngine();
                 }
                 _lastFlag = 0;
