@@ -9,7 +9,7 @@
 #import <Carbon/Carbon.h>
 #import <Foundation/Foundation.h>
 #import "Engine.h"
-#import "AppDelegate.h"
+#import "MKeyCallbacks.h"
 
 #define FRONT_APP [[NSWorkspace sharedWorkspace] frontmostApplication].bundleIdentifier
 #define OTHER_CONTROL_KEY (_flag & kCGEventFlagMaskCommand) || (_flag & kCGEventFlagMaskControl) || \
@@ -40,7 +40,6 @@ NSDictionary *keyStringToKeyCodeMap = @{
 };
 
 
-extern AppDelegate* appDelegate;
 extern int vSendKeyStepByStep;
 extern int vFixChromiumBrowser;
 extern int vPerformLayoutCompat;
@@ -185,7 +184,7 @@ extern "C" {
         if ((_languageTemp & 0x01) != vLanguage) { //for input method
             if (_languageTemp != -1) {
                 vLanguage = _languageTemp;
-                [appDelegate onImputMethodChanged:NO];
+                [[MKeyCallbacks shared] onImputMethodChanged:NO];
                 startNewSession();
             } else {
                 saveSmartSwitchKeyData();
@@ -193,7 +192,7 @@ extern "C" {
         }
         if (vRememberCode && (_languageTemp >> 1) != vCodeTable) { //for remember table code feature
             if (_languageTemp != -1) {
-                [appDelegate onCodeTableChanged:(_languageTemp >> 1)];
+                [[MKeyCallbacks shared] onCodeTableChanged:(_languageTemp >> 1)];
             } else {
                 saveSmartSwitchKeyData();
             }
@@ -512,7 +511,7 @@ extern "C" {
             vLanguage = 0;
         if (HAS_BEEP(vSwitchKeyStatus))
             NSBeep();
-        [appDelegate onImputMethodChanged:YES];
+        [[MKeyCallbacks shared] onImputMethodChanged:YES];
         startNewSession();
     }
     

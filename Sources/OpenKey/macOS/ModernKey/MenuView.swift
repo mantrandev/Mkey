@@ -1,0 +1,47 @@
+//
+//  MenuView.swift
+//  Mkey
+//
+//  Created by Man Tran on 12/05/26.
+//
+
+import SwiftUI
+import AppKit
+
+struct MenuView: View {
+    @EnvironmentObject private var state: AppState
+
+    var body: some View {
+        Toggle("Bật Tiếng Việt", isOn: Binding(
+            get: { state.isVietnamese },
+            set: { _ in state.toggleInputMethod() }
+        ))
+
+        Divider()
+
+        Toggle("Telex", isOn: Binding(
+            get: { state.inputType == 0 },
+            set: { _ in state.setInputType(0) }
+        ))
+
+        Toggle("VNI", isOn: Binding(
+            get: { state.inputType == 1 },
+            set: { _ in state.setInputType(1) }
+        ))
+
+        Divider()
+
+        Button("MKey") {
+            if let url = URL(string: "https://github.com/mantrandev/Mkey") {
+                NSWorkspace.shared.open(url)
+            }
+        }
+
+        Divider()
+
+        Button("Thoát") {
+            NSApp.terminate(nil)
+        }
+        .keyboardShortcut("q")
+    }
+}
