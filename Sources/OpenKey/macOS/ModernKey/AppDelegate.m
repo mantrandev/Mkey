@@ -55,8 +55,6 @@ int vPerformLayoutCompat = 0;
 //beta feature
 int vFixChromiumBrowser = 0; //new on version 2.0
 
-extern int convertToolHotKey;
-extern bool convertToolDontAlertWhenCompleted;
 
 @interface AppDelegate ()
 
@@ -66,32 +64,21 @@ extern bool convertToolDontAlertWhenCompleted;
 @implementation AppDelegate {
     NSWindowController *_mainWC;
     NSWindowController *_macroWC;
-    NSWindowController *_convertWC;
-    NSWindowController *_aboutWC;
-    
+
     NSStatusItem *statusItem;
     NSMenu *theMenu;
-    
+
     NSMenuItem* menuInputMethod;
-    
+
     NSMenuItem* mnuTelex;
     NSMenuItem* mnuVNI;
-    NSMenuItem* mnuSimpleTelex1;
-    NSMenuItem* mnuSimpleTelex2;
-    
+
     NSMenuItem* mnuUnicode;
-    NSMenuItem* mnuTCVN;
-    NSMenuItem* mnuVNIWindows;
-    
-    NSMenuItem* mnuUnicodeComposite;
-    NSMenuItem* mnuVietnameseLocaleCP1258;
-    
-    NSMenuItem* mnuQuickConvert;
 }
 
 -(void)askPermission {
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText: [NSString stringWithFormat:@"OpenKey cần bạn cấp quyền để có thể hoạt động!"]];
+    [alert setMessageText: [NSString stringWithFormat:@"Mkey cần bạn cấp quyền để có thể hoạt động!"]];
     [alert setInformativeText:@"Vui lòng chạy lại ứng dụng sau khi cấp quyền."];
 
     [alert addButtonWithTitle:@"Không"];
@@ -150,7 +137,6 @@ extern bool convertToolDontAlertWhenCompleted;
                 [self onControlPanelSelected];
             }
         }
-        [self setQuickConvertString];
     });
     
     //load default config if is first launch
@@ -186,40 +172,29 @@ extern bool convertToolDontAlertWhenCompleted;
     
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
-    
+
     menuInputMethod = [theMenu addItemWithTitle:@"Bật Tiếng Việt"
-                                                     action:@selector(onInputMethodSelected)
-                                              keyEquivalent:@""];
+                                         action:@selector(onInputMethodSelected)
+                                  keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
     NSMenuItem* menuInputType = [theMenu addItemWithTitle:@"Kiểu gõ" action:nil keyEquivalent:@""];
-    
+
     [theMenu addItem:[NSMenuItem separatorItem]];
-    
-    mnuUnicode = [theMenu addItemWithTitle:@"Unicode dựng sẵn" action:@selector(onCodeSelected:) keyEquivalent:@""];
+
+    mnuUnicode = [theMenu addItemWithTitle:@"unicode" action:nil keyEquivalent:@""];
     mnuUnicode.tag = 0;
-    mnuTCVN = [theMenu addItemWithTitle:@"TCVN3 (ABC)" action:@selector(onCodeSelected:) keyEquivalent:@""];
-    mnuTCVN.tag = 1;
-    mnuVNIWindows = [theMenu addItemWithTitle:@"VNI Windows" action:@selector(onCodeSelected:) keyEquivalent:@""];
-    mnuVNIWindows.tag = 2;
-    NSMenuItem* menuCode = [theMenu addItemWithTitle:@"Bảng mã khác" action:nil keyEquivalent:@""];
-    
+    [mnuUnicode setState:NSControlStateValueOn];
+
     [theMenu addItem:[NSMenuItem separatorItem]];
-    
-    [theMenu addItemWithTitle:@"Công cụ chuyển mã..." action:@selector(onConvertTool) keyEquivalent:@""];
-    mnuQuickConvert = [theMenu addItemWithTitle:@"Chuyển mã nhanh" action:@selector(onQuickConvert) keyEquivalent:@""];
-    
-    [theMenu addItem:[NSMenuItem separatorItem]];
-    
+
     [theMenu addItemWithTitle:@"Bảng điều khiển..." action:@selector(onControlPanelSelected) keyEquivalent:@""];
     [theMenu addItemWithTitle:@"Gõ tắt..." action:@selector(onMacroSelected) keyEquivalent:@""];
-    [theMenu addItemWithTitle:@"Giới thiệu" action:@selector(onAboutSelected) keyEquivalent:@""];
+    [theMenu addItemWithTitle:@"mantrandev" action:@selector(onAboutSelected) keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
-    
+
     [theMenu addItemWithTitle:@"Thoát" action:@selector(terminate:) keyEquivalent:@"q"];
-    
-    
+
     [self setInputTypeMenu:menuInputType];
-    [self setCodeMenu:menuCode];
     
     //set menu
     [statusItem setMenu:theMenu];
@@ -227,43 +202,6 @@ extern bool convertToolDontAlertWhenCompleted;
     [self fillData];
 }
 
--(void)setQuickConvertString {
-    NSMutableString* hotKey = [NSMutableString stringWithString:@""];
-    bool hasAdd = false;
-    if (convertToolHotKey & 0x100) {
-        [hotKey appendString:@"⌃"];
-        hasAdd = true;
-    }
-    if (convertToolHotKey & 0x200) {
-        if (hasAdd)
-            [hotKey appendString:@" + "];
-        [hotKey appendString:@"⌥"];
-        hasAdd = true;
-    }
-    if (convertToolHotKey & 0x400) {
-        if (hasAdd)
-            [hotKey appendString:@" + "];
-        [hotKey appendString:@"⌘"];
-        hasAdd = true;
-    }
-    if (convertToolHotKey & 0x800) {
-        if (hasAdd)
-            [hotKey appendString:@" + "];
-        [hotKey appendString:@"⇧"];
-        hasAdd = true;
-    }
-    
-    unsigned short k = ((convertToolHotKey>>24) & 0xFF);
-    if (k != 0xFE) {
-        if (hasAdd)
-            [hotKey appendString:@" + "];
-        if (k == kVK_Space)
-            [hotKey appendFormat:@"%@", @"␣ "];
-        else
-            [hotKey appendFormat:@"%c", k];
-    }
-    [mnuQuickConvert setTitle: hasAdd ? [NSString stringWithFormat:@"Chuyển mã nhanh - [%@]", [hotKey uppercaseString]] : @"Chuyển mã nhanh"];
-}
 
 -(void)loadDefaultConfig {
     vLanguage = 1; [[NSUserDefaults standardUserDefaults] setInteger:vLanguage forKey:@"InputMethod"];
@@ -315,29 +253,12 @@ extern bool convertToolDontAlertWhenCompleted;
 #pragma mark -StatusBar menu data
 
 - (void)setInputTypeMenu:(NSMenuItem*) parent {
-    //sub for Kieu Go
     NSMenu *sub = [[NSMenu alloc] initWithTitle:@""];
     [sub setAutoenablesItems:NO];
     mnuTelex = [sub addItemWithTitle:@"Telex" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
     mnuTelex.tag = 0;
     mnuVNI = [sub addItemWithTitle:@"VNI" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
     mnuVNI.tag = 1;
-    mnuSimpleTelex1 = [sub addItemWithTitle:@"Simple Telex 1" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
-    mnuSimpleTelex1.tag = 2;
-    mnuSimpleTelex2 = [sub addItemWithTitle:@"Simple Telex 2" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
-    mnuSimpleTelex2.tag = 3;
-    [theMenu setSubmenu:sub forItem:parent];
-}
-
-- (void)setCodeMenu:(NSMenuItem*) parent {
-    //sub for Code
-    NSMenu *sub = [[NSMenu alloc] initWithTitle:@""];
-    [sub setAutoenablesItems:NO];
-    mnuUnicodeComposite = [sub addItemWithTitle:@"Unicode tổ hợp" action:@selector(onCodeSelected:) keyEquivalent:@""];
-    mnuUnicodeComposite.tag = 3;
-    mnuVietnameseLocaleCP1258 = [sub addItemWithTitle:@"Vietnamese Locale CP 1258" action:@selector(onCodeSelected:) keyEquivalent:@""];
-    mnuVietnameseLocaleCP1258.tag = 4;
-    
     [theMenu setSubmenu:sub forItem:parent];
 }
 
@@ -361,16 +282,11 @@ extern bool convertToolDontAlertWhenCompleted;
     NSInteger intInputType = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputType"];
     [mnuTelex setState:NSControlStateValueOff];
     [mnuVNI setState:NSControlStateValueOff];
-    [mnuSimpleTelex1 setState:NSControlStateValueOff];
-    [mnuSimpleTelex2 setState:NSControlStateValueOff];
-    if (intInputType == 0) {
-        [mnuTelex setState:NSControlStateValueOn];
-    } else if (intInputType == 1) {
+    if (intInputType == 1) {
         [mnuVNI setState:NSControlStateValueOn];
-    } else if (intInputType == 2) {
-        [mnuSimpleTelex1 setState:NSControlStateValueOn];
-    } else if (intInputType == 3) {
-        [mnuSimpleTelex2 setState:NSControlStateValueOn];
+    } else {
+        [mnuTelex setState:NSControlStateValueOn];
+        intInputType = 0;
     }
     vInputType = (int)intInputType;
     
@@ -379,24 +295,8 @@ extern bool convertToolDontAlertWhenCompleted;
     if (vSwitchKeyStatus == 0)
         vSwitchKeyStatus = DEFAULT_SWITCH_STATUS;
     
-    NSInteger intCode = [[NSUserDefaults standardUserDefaults] integerForKey:@"CodeTable"];
-    [mnuUnicode setState:NSControlStateValueOff];
-    [mnuTCVN setState:NSControlStateValueOff];
-    [mnuVNIWindows setState:NSControlStateValueOff];
-    [mnuUnicodeComposite setState:NSControlStateValueOff];
-    [mnuVietnameseLocaleCP1258 setState:NSControlStateValueOff];
-    if (intCode == 0) {
-        [mnuUnicode setState:NSControlStateValueOn];
-    } else if (intCode == 1) {
-        [mnuTCVN setState:NSControlStateValueOn];
-    } else if (intCode == 2) {
-        [mnuVNIWindows setState:NSControlStateValueOn];
-    } else if (intCode == 3) {
-        [mnuUnicodeComposite setState:NSControlStateValueOn];
-    } else if (intCode == 4) {
-        [mnuVietnameseLocaleCP1258 setState:NSControlStateValueOn];
-    }
-    vCodeTable = (int)intCode;
+    vCodeTable = 0;
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"CodeTable"];
     
     //
     NSInteger intRunOnStartup = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
@@ -450,26 +350,6 @@ extern bool convertToolDontAlertWhenCompleted;
     [self onCodeTableChanged:(int)menuItem.tag];
 }
 
--(void)onConvertTool {
-    if (_convertWC == nil) {
-        _convertWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"ConvertWindow"];
-    }
-    //[OpenKeyManager showDockIcon:YES];
-    if ([_convertWC.window isVisible])
-        return;
-    [_convertWC.window makeKeyAndOrderFront:nil];
-    [_convertWC.window setLevel:NSFloatingWindowLevel];
-}
-
--(void)onQuickConvert {
-    if ([OpenKeyManager quickConvert]) {
-        if (!convertToolDontAlertWhenCompleted) {
-            [OpenKeyManager showMessage: nil message:@"Chuyển mã thành công!" subMsg:@"Kết quả đã được lưu trong clipboard."];
-        }
-    } else {
-        [OpenKeyManager showMessage: nil message:@"Không có dữ liệu trong clipboard!" subMsg:@"Hãy sao chép một đoạn text để chuyển đổi!"];
-    }
-}
 
 -(void) onControlPanelSelected {
     if (_mainWC == nil) {
@@ -496,15 +376,7 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void) onAboutSelected {
-    if (_aboutWC == nil) {
-        _aboutWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"AboutWindow"];
-    }
-    //[OpenKeyManager showDockIcon:YES];
-    if ([_aboutWC.window isVisible])
-        return;
-
-    [_aboutWC.window makeKeyAndOrderFront:nil];
-    [_aboutWC.window setLevel:NSFloatingWindowLevel];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/mantrandev"]];
 }
 
 #pragma mark -Short key event
