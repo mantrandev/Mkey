@@ -11,18 +11,15 @@
 #import <Cocoa/Cocoa.h>
 #import <ServiceManagement/ServiceManagement.h>
 #import "AppDelegate.h"
-#import "ViewController.h"
 #import "OpenKeyManager.h"
 #import "MJAccessibilityUtils.h"
 
 AppDelegate* appDelegate;
-extern ViewController* viewController;
 extern void OnTableCodeChange(void);
 extern void OnInputMethodChanged(void);
 extern void RequestNewSession(void);
 extern void OnActiveAppChanged(void);
 
-//see document in Engine.h
 int vLanguage = 1;
 int vInputType = 0;
 int vFreeMark = 0;
@@ -30,12 +27,12 @@ int vCodeTable = 0;
 int vCheckSpelling = 1;
 int vUseModernOrthography = 1;
 int vQuickTelex = 0;
-#define DEFAULT_SWITCH_STATUS 0x7A000206 //default option + z
+#define DEFAULT_SWITCH_STATUS 0x20000431 // cmd + space
 int vSwitchKeyStatus = DEFAULT_SWITCH_STATUS;
 int vRestoreIfWrongSpelling = 0;
 int vFixRecommendBrowser = 1;
-int vUseMacro = 1;
-int vUseMacroInEnglishMode = 1;
+int vUseMacro = 0;
+int vUseMacroInEnglishMode = 0;
 int vAutoCapsMacro = 0;
 int vSendKeyStepByStep = 0;
 int vUseSmartSwitchKey = 1;
@@ -44,132 +41,79 @@ int vTempOffSpelling = 0;
 int vAllowConsonantZFWJ = 0;
 int vQuickStartConsonant = 0;
 int vQuickEndConsonant = 0;
-int vRememberCode = 1; //new on version 2.0
-int vOtherLanguage = 1; //new on version 2.0
-int vTempOffOpenKey = 0; //new on version 2.0
-
-int vShowIconOnDock = 0; //new on version 2.0
-
+int vRememberCode = 1;
+int vOtherLanguage = 1;
+int vCurrentLangIsEn = 1;
+int vTempOffOpenKey = 0;
+int vShowIconOnDock = 0;
 int vPerformLayoutCompat = 0;
-
-//beta feature
-int vFixChromiumBrowser = 0; //new on version 2.0
-
+int vFixChromiumBrowser = 0;
 
 @interface AppDelegate ()
-
 @end
 
-
 @implementation AppDelegate {
-    NSWindowController *_mainWC;
-    NSWindowController *_macroWC;
-
     NSStatusItem *statusItem;
     NSMenu *theMenu;
-
-    NSMenuItem* menuInputMethod;
-
-    NSMenuItem* mnuTelex;
-    NSMenuItem* mnuVNI;
-
-    NSMenuItem* mnuUnicode;
+    NSMenuItem *menuInputMethod;
+    NSMenuItem *mnuTelex;
+    NSMenuItem *mnuVNI;
+    NSMenuItem *mnuUnicode;
 }
 
 -(void)askPermission {
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText: [NSString stringWithFormat:@"Mkey cần bạn cấp quyền để có thể hoạt động!"]];
+    [alert setMessageText:@"Mkey cần bạn cấp quyền để có thể hoạt động!"];
     [alert setInformativeText:@"Vui lòng chạy lại ứng dụng sau khi cấp quyền."];
-
     [alert addButtonWithTitle:@"Không"];
     [alert addButtonWithTitle:@"Cấp quyền"];
-
     [alert.window makeKeyAndOrderFront:nil];
     [alert.window setLevel:NSStatusWindowLevel];
-
-    NSModalResponse res = [alert runModal];
-
-    if (res == 1001) {
+    if ([alert runModal] == 1001) {
         MJAccessibilityOpenPanel();
     }
-
     [NSApp terminate:0];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     appDelegate = self;
-    
+
     [self registerSupportedNotification];
-    
-    //set quick tooltip
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInt: 50]
-                                              forKey: @"NSInitialToolTipDelay"];
-    
-    //check whether this app has been launched before that or not
-    NSArray* runningApp = [[NSWorkspace sharedWorkspace] runningApplications];
-    if ([runningApp containsObject:OPENKEY_BUNDLE]) { //if already running -> exit
+    [self updateCurrentLang];
+
+    NSArray *runningApp = [[NSWorkspace sharedWorkspace] runningApplications];
+    if ([runningApp containsObject:OPENKEY_BUNDLE]) {
         [NSApp terminate:nil];
         return;
     }
-    
-    // check if user granted Accessabilty permission
+
     if (!MJAccessibilityIsEnabled()) {
         [self askPermission];
         return;
     }
-    
-    vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
-    if (vShowIconOnDock)
-        [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
-    
-    if (vSwitchKeyStatus & 0x8000)
-        NSBeep();
 
     [self createStatusBarMenu];
-    
-    //init
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (![OpenKeyManager initEventTap]) {
-            [self onControlPanelSelected];
-        } else {
-            NSInteger showui = [[NSUserDefaults standardUserDefaults] integerForKey:@"ShowUIOnStartup"];
-            if (showui == 1) {
-                [self onControlPanelSelected];
-            }
-        }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [OpenKeyManager initEventTap];
     });
-    
-    //load default config if is first launch
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"NonFirstTime"] == 0) {
         [self loadDefaultConfig];
     }
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"NonFirstTime"];
-    
-    //check update if enable
-    NSInteger dontCheckUpdate = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-    if (!dontCheckUpdate)
-        [OpenKeyManager checkNewVersion:nil callbackFunc:nil];
-    
-    //correct run on startup
+
     NSInteger val = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
-    [appDelegate setRunOnStartup:val];
+    [self setRunOnStartup:val];
 }
 
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
-    [self onControlPanelSelected];
-    return YES;
-}
+- (void)applicationWillTerminate:(NSNotification *)aNotification {}
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
-}
-
--(void) createStatusBarMenu {
-    NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-    statusItem = [statusBar statusItemWithLength:NSVariableStatusItemLength];
+-(void)createStatusBarMenu {
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     statusItem.button.image = [NSImage imageNamed:@"Status"];
     statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
-    
+
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
 
@@ -177,68 +121,44 @@ int vFixChromiumBrowser = 0; //new on version 2.0
                                          action:@selector(onInputMethodSelected)
                                   keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
-    NSMenuItem* menuInputType = [theMenu addItemWithTitle:@"Kiểu gõ" action:nil keyEquivalent:@""];
+
+    NSMenuItem *menuInputType = [theMenu addItemWithTitle:@"Kiểu gõ" action:nil keyEquivalent:@""];
+    [self setInputTypeMenu:menuInputType];
 
     [theMenu addItem:[NSMenuItem separatorItem]];
 
-    mnuUnicode = [theMenu addItemWithTitle:@"unicode" action:nil keyEquivalent:@""];
+    mnuUnicode = [theMenu addItemWithTitle:@"Unicode" action:nil keyEquivalent:@""];
     mnuUnicode.tag = 0;
     [mnuUnicode setState:NSControlStateValueOn];
 
     [theMenu addItem:[NSMenuItem separatorItem]];
 
-    [theMenu addItemWithTitle:@"Bảng điều khiển..." action:@selector(onControlPanelSelected) keyEquivalent:@""];
-    [theMenu addItemWithTitle:@"Gõ tắt..." action:@selector(onMacroSelected) keyEquivalent:@""];
     [theMenu addItemWithTitle:@"mantrandev" action:@selector(onAboutSelected) keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
-
     [theMenu addItemWithTitle:@"Thoát" action:@selector(terminate:) keyEquivalent:@"q"];
 
-    [self setInputTypeMenu:menuInputType];
-    
-    //set menu
     [statusItem setMenu:theMenu];
-    
     [self fillData];
 }
 
-
 -(void)loadDefaultConfig {
-    vLanguage = 1; [[NSUserDefaults standardUserDefaults] setInteger:vLanguage forKey:@"InputMethod"];
-    vInputType = 0; [[NSUserDefaults standardUserDefaults] setInteger:vInputType forKey:@"InputType"];
-    vFreeMark = 0; [[NSUserDefaults standardUserDefaults] setInteger:vFreeMark forKey:@"FreeMark"];
-    vCheckSpelling = 1; [[NSUserDefaults standardUserDefaults] setInteger:vCheckSpelling forKey:@"Spelling"];
-    vCodeTable = 0; [[NSUserDefaults standardUserDefaults] setInteger:vCodeTable forKey:@"CodeTable"];
-    vSwitchKeyStatus = DEFAULT_SWITCH_STATUS; [[NSUserDefaults standardUserDefaults] setInteger:vCodeTable forKey:@"SwitchKeyStatus"];
-    vQuickTelex = 0; [[NSUserDefaults standardUserDefaults] setInteger:vQuickTelex forKey:@"QuickTelex"];
-    vUseModernOrthography = 0; [[NSUserDefaults standardUserDefaults] setInteger:vUseModernOrthography forKey:@"ModernOrthography"];
-    vRestoreIfWrongSpelling = 0; [[NSUserDefaults standardUserDefaults] setInteger:vRestoreIfWrongSpelling forKey:@"RestoreIfInvalidWord"];
+    vLanguage = 1;            [[NSUserDefaults standardUserDefaults] setInteger:vLanguage forKey:@"InputMethod"];
+    vInputType = 0;           [[NSUserDefaults standardUserDefaults] setInteger:vInputType forKey:@"InputType"];
+    vFreeMark = 0;            [[NSUserDefaults standardUserDefaults] setInteger:vFreeMark forKey:@"FreeMark"];
+    vCheckSpelling = 1;       [[NSUserDefaults standardUserDefaults] setInteger:vCheckSpelling forKey:@"Spelling"];
+    vCodeTable = 0;           [[NSUserDefaults standardUserDefaults] setInteger:vCodeTable forKey:@"CodeTable"];
+    vSwitchKeyStatus = DEFAULT_SWITCH_STATUS;
+    [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
     vFixRecommendBrowser = 1; [[NSUserDefaults standardUserDefaults] setInteger:vFixRecommendBrowser forKey:@"FixRecommendBrowser"];
-    vUseMacro = 1; [[NSUserDefaults standardUserDefaults] setInteger:vUseMacro forKey:@"UseMacro"];
-    vUseMacroInEnglishMode = 0; [[NSUserDefaults standardUserDefaults] setInteger:vUseMacroInEnglishMode forKey:@"UseMacroInEnglishMode"];
-    vSendKeyStepByStep = 0;[[NSUserDefaults standardUserDefaults] setInteger:vUseMacroInEnglishMode forKey:@"SendKeyStepByStep"];
-    vUseSmartSwitchKey = 1;[[NSUserDefaults standardUserDefaults] setInteger:vUseSmartSwitchKey forKey:@"UseSmartSwitchKey"];
-    vUpperCaseFirstChar = 0;[[NSUserDefaults standardUserDefaults] setInteger:vUpperCaseFirstChar forKey:@"UpperCaseFirstChar"];
-    vTempOffSpelling = 0;[[NSUserDefaults standardUserDefaults] setInteger:vTempOffSpelling forKey:@"vTempOffSpelling"];
-    vAllowConsonantZFWJ = 0;[[NSUserDefaults standardUserDefaults] setInteger:vAllowConsonantZFWJ forKey:@"vAllowConsonantZFWJ"];
-    vQuickStartConsonant = 0;[[NSUserDefaults standardUserDefaults] setInteger:vQuickStartConsonant forKey:@"vQuickStartConsonant"];
-    vQuickEndConsonant = 0;[[NSUserDefaults standardUserDefaults] setInteger:vQuickEndConsonant forKey:@"vQuickEndConsonant"];
-    vRememberCode = 1;[[NSUserDefaults standardUserDefaults] setInteger:vRememberCode forKey:@"vRememberCode"];
-    vOtherLanguage = 1;[[NSUserDefaults standardUserDefaults] setInteger:vOtherLanguage forKey:@"vOtherLanguage"];
-    vTempOffOpenKey = 0;[[NSUserDefaults standardUserDefaults] setInteger:vTempOffOpenKey forKey:@"vTempOffOpenKey"];
-    vShowIconOnDock = 0;[[NSUserDefaults standardUserDefaults] setInteger:vShowIconOnDock forKey:@"vShowIconOnDock"];
-    vFixChromiumBrowser = 0;[[NSUserDefaults standardUserDefaults] setInteger:vFixChromiumBrowser forKey:@"vFixChromiumBrowser"];
-    vPerformLayoutCompat = 0;[[NSUserDefaults standardUserDefaults] setInteger:vPerformLayoutCompat forKey:@"vPerformLayoutCompat"];
-
+    vUseSmartSwitchKey = 1;   [[NSUserDefaults standardUserDefaults] setInteger:vUseSmartSwitchKey forKey:@"UseSmartSwitchKey"];
+    vOtherLanguage = 1;       [[NSUserDefaults standardUserDefaults] setInteger:vOtherLanguage forKey:@"vOtherLanguage"];
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"GrayIcon"];
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"RunOnStartup"];
-
     [self fillData];
-    [viewController fillData];
 }
 
 -(void)setRunOnStartup:(BOOL)val {
-    CFStringRef appId = (__bridge CFStringRef)@"com.tuyenmai.OpenKeyHelper";
+    CFStringRef appId = (__bridge CFStringRef)@"com.mantrandev.MkeyHelper";
     SMLoginItemSetEnabled(appId, val);
 }
 
@@ -247,12 +167,12 @@ int vFixChromiumBrowser = 0; //new on version 2.0
 }
 
 -(void)showIconOnDock:(BOOL)val {
-    [NSApp setActivationPolicy: val ? NSApplicationActivationPolicyRegular : NSApplicationActivationPolicyAccessory];
+    [NSApp setActivationPolicy:val ? NSApplicationActivationPolicyRegular : NSApplicationActivationPolicyAccessory];
 }
 
-#pragma mark -StatusBar menu data
+#pragma mark - Menu data
 
-- (void)setInputTypeMenu:(NSMenuItem*) parent {
+-(void)setInputTypeMenu:(NSMenuItem *)parent {
     NSMenu *sub = [[NSMenu alloc] initWithTitle:@""];
     [sub setAutoenablesItems:NO];
     mnuTelex = [sub addItemWithTitle:@"Telex" action:@selector(onInputTypeSelected:) keyEquivalent:@""];
@@ -262,23 +182,22 @@ int vFixChromiumBrowser = 0; //new on version 2.0
     [theMenu setSubmenu:sub forItem:parent];
 }
 
-- (void) fillData {
-    //fill data
+-(void)fillData {
     NSInteger intInputMethod = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputMethod"];
     NSInteger grayIcon = [[NSUserDefaults standardUserDefaults] integerForKey:@"GrayIcon"];
     if (intInputMethod == 1) {
         [menuInputMethod setState:NSControlStateValueOn];
         statusItem.button.image = [NSImage imageNamed:@"Status"];
-        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
+        [statusItem.button.image setTemplate:grayIcon ? YES : NO];
         statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
     } else {
         [menuInputMethod setState:NSControlStateValueOff];
         statusItem.button.image = [NSImage imageNamed:@"StatusEng"];
-        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
+        [statusItem.button.image setTemplate:grayIcon ? YES : NO];
         statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlightedEng"];
     }
     vLanguage = (int)intInputMethod;
-    
+
     NSInteger intInputType = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputType"];
     [mnuTelex setState:NSControlStateValueOff];
     [mnuVNI setState:NSControlStateValueOff];
@@ -289,136 +208,115 @@ int vFixChromiumBrowser = 0; //new on version 2.0
         intInputType = 0;
     }
     vInputType = (int)intInputType;
-    
+
     NSInteger intSwitchKeyStatus = [[NSUserDefaults standardUserDefaults] integerForKey:@"SwitchKeyStatus"];
     vSwitchKeyStatus = (int)intSwitchKeyStatus;
     if (vSwitchKeyStatus == 0)
         vSwitchKeyStatus = DEFAULT_SWITCH_STATUS;
-    
+
     vCodeTable = 0;
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"CodeTable"];
-    
-    //
+
     NSInteger intRunOnStartup = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
     [self setRunOnStartup:intRunOnStartup ? YES : NO];
-
 }
 
 -(void)onImputMethodChanged:(BOOL)willNotify {
     NSInteger intInputMethod = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputMethod"];
-    if (intInputMethod == 0)
-        intInputMethod = 1;
-    else
-        intInputMethod = 0;
+    intInputMethod = intInputMethod == 0 ? 1 : 0;
     vLanguage = (int)intInputMethod;
     [[NSUserDefaults standardUserDefaults] setInteger:intInputMethod forKey:@"InputMethod"];
-
     [self fillData];
-    [viewController fillData];
-    
-    if (willNotify)
-        OnInputMethodChanged();
+    if (willNotify) OnInputMethodChanged();
 }
 
-#pragma mark -StatusBar menu action
-- (void)onInputMethodSelected {
+#pragma mark - Menu actions
+
+-(void)onInputMethodSelected {
     [self onImputMethodChanged:YES];
 }
 
-- (void)onInputTypeSelected:(id)sender {
-    NSMenuItem *menuItem = (NSMenuItem*) sender;
-    [self onInputTypeSelectedIndex:(int)menuItem.tag];
+-(void)onInputTypeSelected:(id)sender {
+    NSMenuItem *item = (NSMenuItem *)sender;
+    [self onInputTypeSelectedIndex:(int)item.tag];
 }
 
-- (void)onInputTypeSelectedIndex:(int)index {
+-(void)onInputTypeSelectedIndex:(int)index {
     [[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"InputType"];
     vInputType = index;
     [self fillData];
-    [viewController fillData];
 }
 
-- (void)onCodeTableChanged:(int)index {
+-(void)onCodeTableChanged:(int)index {
     [[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"CodeTable"];
     vCodeTable = index;
     [self fillData];
-    [viewController fillData];
     OnTableCodeChange();
 }
 
-- (void)onCodeSelected:(id)sender {
-    NSMenuItem *menuItem = (NSMenuItem*) sender;
-    [self onCodeTableChanged:(int)menuItem.tag];
-}
-
-
--(void) onControlPanelSelected {
-    if (_mainWC == nil) {
-        _mainWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"OpenKey"];
-    }
-    //[OpenKeyManager showDockIcon:YES];
-    if ([_mainWC.window isVisible]) {
-        return;
-    }
-    [_mainWC.window makeKeyAndOrderFront:nil];
-    [_mainWC.window setLevel:NSFloatingWindowLevel];
-}
-
--(void) onMacroSelected {
-    if (_macroWC == nil) {
-        _macroWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"MacroWindow"];
-    }
-    //[OpenKeyManager showDockIcon:YES];
-    if ([_macroWC.window isVisible])
-        return;
-    
-    [_macroWC.window makeKeyAndOrderFront:nil];
-    [_macroWC.window setLevel:NSFloatingWindowLevel];
-}
-
--(void) onAboutSelected {
+-(void)onAboutSelected {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/mantrandev"]];
 }
 
-#pragma mark -Short key event
--(void)onSwitchLanguage {
-    [self onInputMethodSelected];
-    [viewController fillData];
+#pragma mark - Language detection
+
+-(void)updateCurrentLang {
+    TISInputSourceRef isource = TISCopyCurrentKeyboardInputSource();
+    if (isource != NULL) {
+        CFArrayRef langs = (CFArrayRef)TISGetInputSourceProperty(isource, kTISPropertyInputSourceLanguages);
+        if (langs != NULL && CFArrayGetCount(langs) > 0) {
+            NSString *lang = (__bridge NSString *)(CFStringRef)CFArrayGetValueAtIndex(langs, 0);
+            vCurrentLangIsEn = [lang isLike:@"en"] ? 1 : 0;
+        }
+        CFRelease(isource);
+    }
 }
 
-#pragma mark Reset OpenKey after mac computer awake
--(void)receiveWakeNote: (NSNotification*)note {
+-(void)keyboardSourceChanged:(NSNotification *)note {
+    [self updateCurrentLang];
+}
+
+#pragma mark - System notifications
+
+-(void)receiveWakeNote:(NSNotification *)note {
     [OpenKeyManager initEventTap];
 }
 
--(void)receiveSleepNote: (NSNotification*)note {
+-(void)receiveSleepNote:(NSNotification *)note {
     [OpenKeyManager stopEventTap];
 }
 
--(void)receiveActiveSpaceChanged: (NSNotification*)note {
+-(void)receiveActiveSpaceChanged:(NSNotification *)note {
     RequestNewSession();
 }
 
--(void)activeAppChanged: (NSNotification*)note {
+-(void)activeAppChanged:(NSNotification *)note {
     if (vUseSmartSwitchKey && [OpenKeyManager isInited]) {
         OnActiveAppChanged();
     }
 }
 
 -(void)registerSupportedNotification {
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-                                                           selector: @selector(receiveWakeNote:)
-                                                               name: NSWorkspaceDidWakeNotification object: NULL];
-    
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-                                                           selector: @selector(receiveSleepNote:)
-                                                               name: NSWorkspaceWillSleepNotification object: NULL];
-    
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-                                                           selector: @selector(receiveActiveSpaceChanged:)
-                                                               name: NSWorkspaceActiveSpaceDidChangeNotification object: NULL];
-    
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-                                                           selector: @selector(activeAppChanged:)
-                                                               name: NSWorkspaceDidActivateApplicationNotification object: NULL];
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(keyboardSourceChanged:)
+                                                            name:(NSString *)kTISNotifySelectedKeyboardInputSourceChanged
+                                                          object:nil];
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                           selector:@selector(receiveWakeNote:)
+                                                               name:NSWorkspaceDidWakeNotification
+                                                             object:NULL];
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                           selector:@selector(receiveSleepNote:)
+                                                               name:NSWorkspaceWillSleepNotification
+                                                             object:NULL];
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                           selector:@selector(receiveActiveSpaceChanged:)
+                                                               name:NSWorkspaceActiveSpaceDidChangeNotification
+                                                             object:NULL];
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                           selector:@selector(activeAppChanged:)
+                                                               name:NSWorkspaceDidActivateApplicationNotification
+                                                             object:NULL];
 }
+
 @end

@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ViewController.h"
 
 #define OPENKEY_BUNDLE @"com.mantrandev.mkey"
 
@@ -15,19 +14,12 @@
 
 -(void)onImputMethodChanged:(BOOL)willNotify;
 -(void)onInputMethodSelected;
-
 -(void)askPermission;
-
 -(void)onInputTypeSelectedIndex:(int)index;
 -(void)onCodeTableChanged:(int)index;
-
 -(void)setRunOnStartup:(BOOL)val;
 -(void)loadDefaultConfig;
-
 -(void)setGrayIcon:(BOOL)val;
-
--(void)onMacroSelected;
-
 -(void)showIconOnDock:(BOOL)val;
-@end
 
+@end
