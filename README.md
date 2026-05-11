@@ -12,7 +12,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 - **Bảng mã:** Unicode (precomposed)
 - **Đặt dấu oà uý** (mặc định bật)
 - **Chạy cùng macOS**
-- **Phím tắt chuyển ngôn ngữ:** `Cmd + Space` (mặc định)
+- **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space` (mặc định)
 - **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
 - **Menu bar SwiftUI** — hiển thị `V` (tiếng Việt) hoặc `E` (tiếng Anh)
 
