@@ -108,8 +108,8 @@ final class AppState: ObservableObject {
         vCodeTable = 0
         UserDefaults.standard.set(0, forKey: "CodeTable")
 
-        vSwitchKeyStatus = 0x20000431
-        UserDefaults.standard.set(0x20000431, forKey: "SwitchKeyStatus")
+        vSwitchKeyStatus = 0x20000131
+        UserDefaults.standard.set(0x20000131, forKey: "SwitchKeyStatus")
 
         vFixRecommendBrowser = 1
         UserDefaults.standard.set(1, forKey: "FixRecommendBrowser")
@@ -128,7 +128,12 @@ final class AppState: ObservableObject {
 
     func syncFromDefaults() {
         let savedSwitch = UserDefaults.standard.integer(forKey: "SwitchKeyStatus")
-        vSwitchKeyStatus = savedSwitch == 0 ? 0x20000431 : Int32(savedSwitch)
+        if savedSwitch == 0 || savedSwitch == 0x20000431 {
+            vSwitchKeyStatus = 0x20000131
+            UserDefaults.standard.set(0x20000131, forKey: "SwitchKeyStatus")
+        } else {
+            vSwitchKeyStatus = Int32(savedSwitch)
+        }
 
         vCodeTable = 0
         UserDefaults.standard.set(0, forKey: "CodeTable")
