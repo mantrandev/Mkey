@@ -11,7 +11,7 @@
 #import <Cocoa/Cocoa.h>
 #import <ServiceManagement/ServiceManagement.h>
 #import "AppDelegate.h"
-#import "OpenKeyManager.h"
+#import "MKeyManager.h"
 #import "MJAccessibilityUtils.h"
 
 AppDelegate* appDelegate;
@@ -95,7 +95,7 @@ int vFixChromiumBrowser = 0;
     [self createStatusBarMenu];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OpenKeyManager initEventTap];
+        [MKeyManager initEventTap];
     });
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"NonFirstTime"] == 0) {
@@ -261,11 +261,11 @@ int vFixChromiumBrowser = 0;
 #pragma mark - System notifications
 
 -(void)receiveWakeNote:(NSNotification *)note {
-    [OpenKeyManager initEventTap];
+    [MKeyManager initEventTap];
 }
 
 -(void)receiveSleepNote:(NSNotification *)note {
-    [OpenKeyManager stopEventTap];
+    [MKeyManager stopEventTap];
 }
 
 -(void)receiveActiveSpaceChanged:(NSNotification *)note {
@@ -273,7 +273,7 @@ int vFixChromiumBrowser = 0;
 }
 
 -(void)activeAppChanged:(NSNotification *)note {
-    if (vUseSmartSwitchKey && [OpenKeyManager isInited]) {
+    if (vUseSmartSwitchKey && [MKeyManager isInited]) {
         OnActiveAppChanged();
     }
 }

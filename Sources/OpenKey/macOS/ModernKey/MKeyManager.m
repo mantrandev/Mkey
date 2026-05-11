@@ -1,12 +1,12 @@
 //
-//  OpenKeyManager.m
+//  MKeyManager.m
 //  ModernKey
 //
 //  Created by mantrandev on 1/27/19.
 //  Copyright © mantrandev. All rights reserved.
 //
 
-#import "OpenKeyManager.h"
+#import "MKeyManager.h"
 
 extern void MKeyInit(void);
 extern CGEventRef MKeyCallback(CGEventTapProxy proxy,
@@ -14,7 +14,7 @@ extern CGEventRef MKeyCallback(CGEventTapProxy proxy,
                                CGEventRef event,
                                void *refcon);
 
-@implementation OpenKeyManager
+@implementation MKeyManager
 
 static BOOL               _isInited = NO;
 static CFMachPortRef      eventTap;

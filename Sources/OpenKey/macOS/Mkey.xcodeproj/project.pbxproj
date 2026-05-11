@@ -16,7 +16,7 @@
 		238519FF21F1BF8A00E79A41 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519FD21F1BF5100E79A41 /* EventKit.framework */; };
 		23851A0021F1BFA300E79A41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519FB21F1BF4900E79A41 /* Cocoa.framework */; };
 		23851A0121F1C1A400E79A41 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519F921F1BF4400E79A41 /* CoreGraphics.framework */; };
-		2389467D21FDDB920030A13B /* OpenKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2389467C21FDDB920030A13B /* OpenKeyManager.m */; };
+		2389467D21FDDB920030A13B /* MKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2389467C21FDDB920030A13B /* MKeyManager.m */; };
 		238AF97122042EC600AEFA17 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 238AF97022042EC600AEFA17 /* Icon.icns */; };
 		23963B5022040C720097189E /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23963B4F22040C720097189E /* ServiceManagement.framework */; };
 		23E2E49D2314FD3A006CCC3E /* Macro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2E4952314FD3A006CCC3E /* Macro.cpp */; };
@@ -58,8 +58,8 @@
 		238519FB21F1BF4900E79A41 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		238519FD21F1BF5100E79A41 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		23874B0F220160A500000BC8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		2389467C21FDDB920030A13B /* OpenKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenKeyManager.m; sourceTree = "<group>"; };
-		2389467E21FDDC3F0030A13B /* OpenKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenKeyManager.h; sourceTree = "<group>"; };
+		2389467C21FDDB920030A13B /* MKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MKeyManager.m; sourceTree = "<group>"; };
+		2389467E21FDDC3F0030A13B /* MKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKeyManager.h; sourceTree = "<group>"; };
 		238AF97022042EC600AEFA17 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		23963B4F22040C720097189E /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		23A984BE220ED07E000914A2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -131,8 +131,8 @@
 				232EDA6221F1B33F0085D362 /* Info.plist */,
 				232EDA6321F1B33F0085D362 /* main.m */,
 				232EDA6521F1B33F0085D362 /* ModernKey.entitlements */,
-				2389467E21FDDC3F0030A13B /* OpenKeyManager.h */,
-				2389467C21FDDB920030A13B /* OpenKeyManager.m */,
+				2389467E21FDDC3F0030A13B /* MKeyManager.h */,
+				2389467C21FDDB920030A13B /* MKeyManager.m */,
 				2371AAEE22FA85B200CA1B57 /* MKey.mm */,
 			);
 			path = ModernKey;
@@ -260,7 +260,7 @@
 				23E2E49F2314FD3A006CCC3E /* Engine.cpp in Sources */,
 				23E2E49E2314FD3A006CCC3E /* SmartSwitchKey.cpp in Sources */,
 				23F512852336386200397988 /* MJAccessibilityUtils.m in Sources */,
-				2389467D21FDDB920030A13B /* OpenKeyManager.m in Sources */,
+				2389467D21FDDB920030A13B /* MKeyManager.m in Sources */,
 				23E2E4A02314FD3A006CCC3E /* Vietnamese.cpp in Sources */,
 				232EDA6421F1B33F0085D362 /* main.m in Sources */,
 				2371AAEF22FA85B200CA1B57 /* MKey.mm in Sources */,
