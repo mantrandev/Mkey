@@ -112,7 +112,7 @@ int vFixChromiumBrowser = 0;
 -(void)createStatusBarMenu {
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     statusItem.button.title = @"V";
-    statusItem.button.font = [NSFont systemFontOfSize:16 weight:NSFontWeightSemibold];
+    statusItem.button.font = [NSFont systemFontOfSize:18 weight:NSFontWeightSemibold];
 
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
