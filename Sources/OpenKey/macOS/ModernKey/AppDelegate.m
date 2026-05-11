@@ -129,7 +129,7 @@ int vFixChromiumBrowser = 0;
 
     [theMenu addItem:[NSMenuItem separatorItem]];
 
-    [theMenu addItemWithTitle:@"mantrandev" action:@selector(onAboutSelected) keyEquivalent:@""];
+    [theMenu addItemWithTitle:@"MKey" action:@selector(onAboutSelected) keyEquivalent:@""];
     [theMenu addItem:[NSMenuItem separatorItem]];
     [theMenu addItemWithTitle:@"Thoát" action:@selector(terminate:) keyEquivalent:@"q"];
 
@@ -237,7 +237,7 @@ int vFixChromiumBrowser = 0;
 }
 
 -(void)onAboutSelected {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/mantrandev"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/mantrandev/Mkey"]];
 }
 
 #pragma mark - Language detection
