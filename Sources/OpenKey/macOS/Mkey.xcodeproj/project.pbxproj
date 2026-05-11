@@ -11,7 +11,7 @@
 		232EDA6421F1B33F0085D362 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 232EDA6321F1B33F0085D362 /* main.m */; };
 		233C4A6E231F923D00DD7052 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233C4A6D231F923D00DD7052 /* AppKit.framework */; };
 		233C4A70231F937900DD7052 /* ConvertTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 233C4A6F231F937900DD7052 /* ConvertTool.cpp */; };
-		2371AAEF22FA85B200CA1B57 /* OpenKey.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2371AAEE22FA85B200CA1B57 /* OpenKey.mm */; };
+		2371AAEF22FA85B200CA1B57 /* MKey.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2371AAEE22FA85B200CA1B57 /* MKey.mm */; };
 		238519F821F1BF3C00E79A41 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519F221F1B8E200E79A41 /* Foundation.framework */; };
 		238519FF21F1BF8A00E79A41 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519FD21F1BF5100E79A41 /* EventKit.framework */; };
 		23851A0021F1BFA300E79A41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238519FB21F1BF4900E79A41 /* Cocoa.framework */; };
@@ -49,14 +49,7 @@
 		233C4A6D231F923D00DD7052 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		233C4A6F231F937900DD7052 /* ConvertTool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertTool.cpp; sourceTree = "<group>"; };
 		233C4A71231F938800DD7052 /* ConvertTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConvertTool.h; sourceTree = "<group>"; };
-		2371AAEE22FA85B200CA1B57 /* OpenKey.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenKey.mm; sourceTree = "<group>"; };
-		237559B42204156000FB8CB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		237559B52204156000FB8CB9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		237559B72204156000FB8CB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		237559BA2204156000FB8CB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		237559BC2204156000FB8CB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		237559BD2204156000FB8CB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		237559BF2204156000FB8CB9 /* OpenKeyHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenKeyHelper.entitlements; sourceTree = "<group>"; };
+		2371AAEE22FA85B200CA1B57 /* MKey.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MKey.mm; sourceTree = "<group>"; };
 		237724A3232BA3B800E92BDF /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
 		237724A4232BA3B800E92BDF /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
 		237724A5232BA3B800E92BDF /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
@@ -115,7 +108,6 @@
 				23E2E4932314FD3A006CCC3E /* engine */,
 				232EDA5621F1B33E0085D362 /* ModernKey */,
 				232EDA5521F1B33E0085D362 /* Products */,
-				237559B32204156000FB8CB9 /* OpenKeyHelper */,
 				238519F121F1B8E200E79A41 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -141,23 +133,9 @@
 				232EDA6521F1B33F0085D362 /* ModernKey.entitlements */,
 				2389467E21FDDC3F0030A13B /* OpenKeyManager.h */,
 				2389467C21FDDB920030A13B /* OpenKeyManager.m */,
-				2371AAEE22FA85B200CA1B57 /* OpenKey.mm */,
+				2371AAEE22FA85B200CA1B57 /* MKey.mm */,
 			);
 			path = ModernKey;
-			sourceTree = "<group>";
-		};
-		237559B32204156000FB8CB9 /* OpenKeyHelper */ = {
-			isa = PBXGroup;
-			children = (
-				237559B42204156000FB8CB9 /* AppDelegate.h */,
-				237559B52204156000FB8CB9 /* AppDelegate.m */,
-				237559B72204156000FB8CB9 /* Assets.xcassets */,
-				237559B92204156000FB8CB9 /* MainMenu.xib */,
-				237559BC2204156000FB8CB9 /* Info.plist */,
-				237559BD2204156000FB8CB9 /* main.m */,
-				237559BF2204156000FB8CB9 /* OpenKeyHelper.entitlements */,
-			);
-			path = OpenKeyHelper;
 			sourceTree = "<group>";
 		};
 		237724A2232BA3B800E92BDF /* platforms */ = {
@@ -285,7 +263,7 @@
 				2389467D21FDDB920030A13B /* OpenKeyManager.m in Sources */,
 				23E2E4A02314FD3A006CCC3E /* Vietnamese.cpp in Sources */,
 				232EDA6421F1B33F0085D362 /* main.m in Sources */,
-				2371AAEF22FA85B200CA1B57 /* OpenKey.mm in Sources */,
+				2371AAEF22FA85B200CA1B57 /* MKey.mm in Sources */,
 				23E2E49D2314FD3A006CCC3E /* Macro.cpp in Sources */,
 				233C4A70231F937900DD7052 /* ConvertTool.cpp in Sources */,
 				232EDA5921F1B33E0085D362 /* AppDelegate.m in Sources */,
@@ -293,17 +271,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		237559B92204156000FB8CB9 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				237559BA2204156000FB8CB9 /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		232EDA6621F1B33F0085D362 /* Debug */ = {
