@@ -1012,7 +1012,9 @@ void checkForStandaloneChar(const Uint16& data, const bool& isCaps, const Uint32
     
     if (_index == 0) { //zero char
         insertKey(data, isCaps, false);
-        reverseLastStandaloneChar(keyWillReverse, isCaps);
+        if (data != KEY_W) {
+            reverseLastStandaloneChar(keyWillReverse, isCaps);
+        }
         return;
     } else if (_index == 1) { //1 char
         for (i = 0; i < _standaloneWbad.size(); i++) {
