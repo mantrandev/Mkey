@@ -34,6 +34,10 @@ macOS 13.0+.
 **Accessibility:** Cấp quyền để app hoạt động:  
 *System Settings → Privacy & Security → Accessibility* → bật `Mkey`.
 
+**Text Input:** Để Mkey hoạt động mượt, chỉ giữ **một** input source là `U.S.` (English) trong *System Settings → Keyboard → Text Input → Input Sources*. Xoá hết các input source tiếng Việt (Telex/VNI) của macOS — Mkey tự xử lý phần gõ.
+
+![Text Input config](docs/text-input.png)
+
 ## Cài đặt
 
 **Homebrew (khuyến nghị):**
