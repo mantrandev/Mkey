@@ -4,7 +4,11 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Tải về
 
-[**Mkey-v0.0.3.dmg**](https://github.com/mantrandev/Mkey/releases/tag/v0.0.3)
+| Bản | Kiểu gõ | Link |
+|---|---|---|
+| Đầy đủ (Telex + VNI) | Telex / VNI | [Mkey-v0.0.3.dmg](https://github.com/mantrandev/Mkey/releases/tag/v0.0.3) |
+| VNI only | VNI (cố định) | [Mkey-vni-v0.0.3.dmg](https://github.com/mantrandev/Mkey/releases/tag/vni-v0.0.3) |
+| Telex only | Telex (cố định) | [Mkey-telex-v0.0.3.dmg](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.3) |
 
 ## Tính năng
 
