@@ -19,19 +19,7 @@ struct MenuView: View {
 
         Divider()
 
-        Toggle("Telex", isOn: Binding(
-            get: { state.inputType == 0 },
-            set: { _ in state.setInputType(0) }
-        ))
-
-        Toggle("VNI", isOn: Binding(
-            get: { state.inputType == 1 },
-            set: { _ in state.setInputType(1) }
-        ))
-
-        Divider()
-
-        Button("MKey") {
+        Button("MKey VNI • v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")") {
             if let url = URL(string: "https://github.com/mantrandev/Mkey") {
                 NSWorkspace.shared.open(url)
             }
