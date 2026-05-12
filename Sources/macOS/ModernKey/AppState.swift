@@ -12,7 +12,6 @@ final class AppState: ObservableObject {
     static let shared = AppState()
 
     @Published private(set) var isVietnamese: Bool
-    @Published private(set) var inputType: Int
 
     private var observers: [NSObjectProtocol] = []
 
@@ -21,9 +20,8 @@ final class AppState: ObservableObject {
         isVietnamese = savedMethod == 1
         vLanguage = savedMethod == 1 ? 1 : 0
 
-        let savedType = UserDefaults.standard.integer(forKey: "InputType")
-        inputType = savedType
-        vInputType = Int32(savedType)
+        vInputType = 0
+        UserDefaults.standard.set(0, forKey: "InputType")
 
         registerObservers()
     }
@@ -60,7 +58,6 @@ final class AppState: ObservableObject {
     }
 
     private func applyCodeTableChange(index: Int) {
-        inputType = index
         vCodeTable = Int32(index)
         UserDefaults.standard.set(index, forKey: "CodeTable")
         OnTableCodeChange()
@@ -73,12 +70,6 @@ final class AppState: ObservableObject {
         if notify {
             OnInputMethodChanged()
         }
-    }
-
-    func setInputType(_ type: Int) {
-        inputType = type
-        vInputType = Int32(type)
-        UserDefaults.standard.set(type, forKey: "InputType")
     }
 
     func setRunOnStartup(_ val: Bool) {
@@ -95,9 +86,8 @@ final class AppState: ObservableObject {
         vLanguage = 1
         UserDefaults.standard.set(1, forKey: "InputMethod")
 
-        inputType = 1
-        vInputType = 1
-        UserDefaults.standard.set(1, forKey: "InputType")
+        vInputType = 0
+        UserDefaults.standard.set(0, forKey: "InputType")
 
         vFreeMark = 1
         UserDefaults.standard.set(1, forKey: "FreeMark")
