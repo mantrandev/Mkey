@@ -1,5 +1,9 @@
 # Mkey Change Log
 
+##### Version 0.0.3: (12/05/2026)
+- Fix menu bar unresponsive after sleep/wake — store background run loop ref and stop it correctly.
+- Fix wake handler blocking main thread — dispatch initEventTap to background on wake.
+
 ##### Version 0.0.2: (12/05/2026)
 - Migrate menu bar to SwiftUI with MenuBarExtra.
 - Set VNI as default input method.

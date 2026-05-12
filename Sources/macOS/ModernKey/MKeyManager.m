@@ -20,6 +20,7 @@ static BOOL               _isInited = NO;
 static CFMachPortRef      eventTap;
 static CGEventMask        eventMask;
 static CFRunLoopSourceRef runLoopSource;
+static CFRunLoopRef       _eventTapRunLoop = NULL;
 
 +(BOOL)isInited {
     return _isInited;
@@ -52,24 +53,27 @@ static CFRunLoopSourceRef runLoopSource;
     }
 
     _isInited = YES;
+    _eventTapRunLoop = CFRunLoopGetCurrent();
     runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes);
+    CFRunLoopAddSource(_eventTapRunLoop, runLoopSource, kCFRunLoopCommonModes);
     CGEventTapEnable(eventTap, true);
     CFRunLoopRun();
+
+    CFRunLoopRemoveSource(_eventTapRunLoop, runLoopSource, kCFRunLoopCommonModes);
+    CFRelease(runLoopSource);
+    runLoopSource = nil;
+    CFMachPortInvalidate(eventTap);
+    CFRelease(eventTap);
+    eventTap = nil;
+    _eventTapRunLoop = NULL;
+    _isInited = NO;
 
     return YES;
 }
 
 +(BOOL)stopEventTap {
-    if (_isInited) {
-        CFRunLoopStop(CFRunLoopGetCurrent());
-        CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
-        CFRelease(runLoopSource);
-        runLoopSource = nil;
-        CFMachPortInvalidate(eventTap);
-        CFRelease(eventTap);
-        eventTap = nil;
-        _isInited = NO;
+    if (_isInited && _eventTapRunLoop) {
+        CFRunLoopStop(_eventTapRunLoop);
     }
     return YES;
 }

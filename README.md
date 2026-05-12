@@ -4,7 +4,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Tải về
 
-[**Mkey-v0.0.2.dmg**](https://github.com/mantrandev/Mkey/releases/tag/v0.0.2)
+[**Mkey-v0.0.3.dmg**](https://github.com/mantrandev/Mkey/releases/tag/v0.0.3)
 
 ## Tính năng
 

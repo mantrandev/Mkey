@@ -76,7 +76,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func keyboardSourceChanged() { updateCurrentLang() }
-    @objc private func receiveWake() { MKeyManager.initEventTap() }
+    @objc private func receiveWake() {
+        DispatchQueue.global(qos: .default).async { MKeyManager.initEventTap() }
+    }
     @objc private func receiveSleep() { MKeyManager.stopEventTap() }
     @objc private func activeSpaceChanged() { RequestNewSession() }
     @objc private func activeAppChanged() {
