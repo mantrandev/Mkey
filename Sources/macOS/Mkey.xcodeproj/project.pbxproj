@@ -422,7 +422,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 0.0.3;
 				OTHER_LDFLAGS = (
 					"-lc++\n-lc++",
 				);
@@ -450,7 +450,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 0.0.3;
 				OTHER_LDFLAGS = (
 					"-lc++\n-lc++",
 				);
