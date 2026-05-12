@@ -28,11 +28,23 @@ macOS 13.0+.
 
 ## Cài đặt
 
+**Homebrew (khuyến nghị):**
+
+```bash
+brew tap mantrandev/tap
+brew install --cask mantrandev/tap/mkey
+```
+
+**Thủ công:**
+
 1. Tải `Mkey.dmg` từ [Releases](https://github.com/mantrandev/Mkey/releases)
 2. Mở DMG, kéo `Mkey.app` vào thư mục `Applications`
-3. Mở `Mkey` — hệ thống sẽ yêu cầu cấp quyền Accessibility
-4. Vào *System Settings → Privacy & Security → Accessibility* → bật `Mkey`
-5. Mở lại `Mkey`
+
+**Sau khi cài (cả hai cách):**
+
+1. Mở `Mkey` — hệ thống sẽ yêu cầu cấp quyền Accessibility
+2. Vào *System Settings → Privacy & Security → Accessibility* → bật `Mkey`
+3. Mở lại `Mkey`
 
 ## Build
 
