@@ -4,7 +4,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Tải về
 
-[**Mkey-telex-v0.0.3.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.3)
+[**Mkey-telex-v0.0.4.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.4)
 
 ## Screenshot
 
