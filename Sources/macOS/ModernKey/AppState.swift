@@ -99,8 +99,8 @@ final class AppState: ObservableObject {
         vInputType = 1
         UserDefaults.standard.set(1, forKey: "InputType")
 
-        vFreeMark = 0
-        UserDefaults.standard.set(0, forKey: "FreeMark")
+        vFreeMark = 1
+        UserDefaults.standard.set(1, forKey: "FreeMark")
 
         vCheckSpelling = 1
         UserDefaults.standard.set(1, forKey: "Spelling")

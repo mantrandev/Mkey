@@ -9,7 +9,7 @@
 
 int vLanguage             = 1;
 int vInputType            = 1;
-int vFreeMark             = 0;
+int vFreeMark             = 1;
 int vCodeTable            = 0;
 int vCheckSpelling        = 1;
 int vUseModernOrthography = 1;

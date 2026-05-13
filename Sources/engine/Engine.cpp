@@ -481,6 +481,13 @@ void checkCorrectVowel(vector<vector<Uint16>>& charset, int& i, int& k, const Ui
         return;
     }
     k = _index - 1;
+    while (k >= 0 && IS_NUMBER_KEY(CHR(k))) {
+        k--;
+    }
+    if (k < (int)charset[i].size() - 1) {
+        isCorect = false;
+        return;
+    }
     for (j = (int)charset[i].size() - 1; j >= 0; j--) {
         if ((charset[i][j] & ~(vQuickEndConsonant ? END_CONSONANT_MASK : 0)) != CHR(k)) {
             isCorect = false;
@@ -1512,7 +1519,7 @@ void vKeyHandleEvent(const vKeyEvent& event,
             handleMainKey(data, _isCaps);
         }
 
-        if (!vFreeMark && !IS_KEY_D(data)) {
+        if (!IS_KEY_D(data)) {
             if (hCode == vDoNothing) {
                 checkGrammar(-1);
             } else {
