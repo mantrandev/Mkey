@@ -18,8 +18,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 - **Kiểu gõ:** Telex, VNI
 - **Bảng mã:** Unicode
-- **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space` (mặc định)
-- **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
+- **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space`
 - **Menu bar SwiftUI** — hiển thị `V` (tiếng Việt) hoặc `E` (tiếng Anh)
 - **Gõ dấu** ở bất kì chỗ nào trong từ ở VNI
   - MinhBeo1 | MinhBe1o -> MinhBéo
@@ -65,7 +64,3 @@ Mở `Sources/macOS/Mkey.xcodeproj`, chọn scheme `Mkey`, build.
 
 - **Debug:** bundle ID `com.mantrandev.mkey.dev`
 - **Release:** bundle ID `com.mantrandev.mkey`
-
-## Nguồn gốc
-
-Fork từ [tuyenvm/OpenKey](https://github.com/tuyenvm/OpenKey) — GPL license.
