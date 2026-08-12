@@ -2,8 +2,6 @@
 
 Fork từ [OpenKey](https://github.com/tuyenvm/OpenKey)
 
-## Tải về
-
 | Bản | Kiểu gõ | Link |
 |---|---|---|
 | Đầy đủ (Telex + VNI) | Telex / VNI | [Mkey-v0.0.6.dmg](https://github.com/mantrandev/Mkey/releases/tag/v0.0.6) |
