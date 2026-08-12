@@ -4,7 +4,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Tải về
 
-[**Mkey-telex-v0.0.4.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.4)
+[**Mkey-telex-v0.0.5.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.5)
 
 ## Screenshot
 
@@ -19,10 +19,13 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 - **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space` (mặc định)
 - **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
 - **Menu bar SwiftUI** — hiển thị `V` (tiếng Việt) hoặc `E` (tiếng Anh)
+- **Gõ dấu** ở bất kì chỗ nào trong từ ở VNI
+  - MinhBeo1 | MinhBe1o -> MinhBéo
+  - Diu91 | D9i1u -> Đíu
 
 ## Yêu cầu
 
-macOS 13.0+.
+macOS 13.0+ (Ventura), Apple Silicon. Build arm64-only nên không chạy trên Mac Intel.
 
 **Gatekeeper:** Vì app chưa được notarize, cần bỏ chặn thủ công sau khi cài:  
 *System Settings → Privacy & Security* → tìm `Mkey` → bấm **Open Anyway**.
@@ -60,7 +63,3 @@ Mở `Sources/macOS/Mkey.xcodeproj`, chọn scheme `Mkey`, build.
 
 - **Debug:** bundle ID `com.mantrandev.mkey.dev`
 - **Release:** bundle ID `com.mantrandev.mkey`
-
-## Nguồn gốc
-
-Fork từ [tuyenvm/OpenKey](https://github.com/tuyenvm/OpenKey) — GPL license.

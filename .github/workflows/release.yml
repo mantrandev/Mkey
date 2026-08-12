@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+      - "vni-v*"
+      - "telex-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Build and package DMG
+        run: ./build.sh
+
+      - name: Verify DMG contents
+        run: |
+          MP=$(hdiutil attach build/Mkey.dmg -nobrowse -readonly | grep Volumes | awk '{print $3}')
+          test -d "$MP/Mkey.app"
+          BIN="$MP/Mkey.app/Contents/MacOS/Mkey"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleDisplayName' "$MP/Mkey.app/Contents/Info.plist")" = "Mkey"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$MP/Mkey.app/Contents/Info.plist")" = "com.mantrandev.mkey"
+          test "$(lipo -archs "$BIN")" = "arm64"
+          test "$(nm "$BIN" 2>/dev/null | wc -l | tr -d ' ')" -lt 600
+          codesign -dv "$MP/Mkey.app" 2>&1 | grep -q "Signature=adhoc"
+          echo "binary $(stat -f%z "$BIN") bytes, dmg $(stat -f%z build/Mkey.dmg) bytes"
+          hdiutil detach "$MP"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mkey-dmg-${{ github.ref_name }}
+          path: build/Mkey.dmg
+          if-no-files-found: error
+
+      - name: Attach DMG to release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/Mkey.dmg "build/Mkey-${GITHUB_REF_NAME}.dmg"
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --title "Mkey $GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" "build/Mkey-${GITHUB_REF_NAME}.dmg" --clobber
