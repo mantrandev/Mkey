@@ -18,6 +18,9 @@ xcodebuild -project "$PROJECT" \
            -scheme "$SCHEME" \
            -configuration Release \
            -derivedDataPath "$DERIVED" \
+           CODE_SIGN_IDENTITY="" \
+           CODE_SIGNING_REQUIRED=NO \
+           CODE_SIGNING_ALLOWED=NO \
            clean build \
            | grep -E "error:|warning:|BUILD SUCCEEDED|BUILD FAILED"
 
