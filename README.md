@@ -4,7 +4,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Tải về
 
-[**Mkey-telex-v0.0.5.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.5)
+[**Mkey-telex-v0.0.6.dmg**](https://github.com/mantrandev/Mkey/releases/tag/telex-v0.0.6)
 
 ## Screenshot
 
@@ -18,7 +18,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 - **Chạy cùng macOS**
 - **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space` (mặc định)
 - **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
-- **Menu bar SwiftUI** — hiển thị `V` (tiếng Việt) hoặc `E` (tiếng Anh)
+- **Menu bar SwiftUI** — hiển thị `M` (tiếng Việt) hoặc `E` (tiếng Anh)
 - **Gõ dấu** ở bất kì chỗ nào trong từ (free mark, mặc định bật)
 
 ## Yêu cầu
@@ -63,3 +63,15 @@ Mở `Sources/macOS/Mkey.xcodeproj`, chọn scheme `Mkey`, build.
 
 - **Debug:** bundle ID `com.mantrandev.mkey.dev`
 - **Release:** bundle ID `com.mantrandev.mkey`
+
+## Icon
+
+App icon là pixel-art 8-bit sinh từ vector, không sửa `.icns` bằng tay:
+
+```bash
+./design/make-icon.sh
+```
+
+Script render `design/Icon.svg` qua Chrome headless ở đủ 10 kích cỡ iconset (16→1024) rồi `iconutil` đóng thành `Sources/macOS/ModernKey/Resources/Icon.icns`.
+
+Chữ M vẽ trên lưới **16×16**, cố ý chọn 16 vì 1024/16, 512/16 … 16/16 đều là số nguyên — mọi biên pixel rơi đúng lưới ở mọi kích cỡ nên không sinh pixel antialias. Ảnh chỉ có 1 màu và 0 pixel alpha trung gian, nhờ đó `.icns` còn 42KB thay vì 130KB. Đổi sang lưới không chia hết (12×12, 24×24) sẽ mất tính chất này.
