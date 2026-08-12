@@ -26,7 +26,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Yêu cầu
 
-macOS 13.0+ (Ventura).
+macOS 13.0+ (Ventura), Apple Silicon. Build arm64-only nên không chạy trên Mac Intel.
 
 **Gatekeeper:** Vì app chưa được notarize, cần bỏ chặn thủ công sau khi cài:  
 *System Settings → Privacy & Security* → tìm `Mkey` → bấm **Open Anyway**.

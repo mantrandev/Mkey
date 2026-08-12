@@ -24,6 +24,9 @@ xcodebuild -project "$PROJECT" \
 echo "→ Stripping quarantine..."
 xattr -cr "$APP_PATH"
 
+echo "→ Stripping symbols..."
+strip -x "$APP_PATH/Contents/MacOS/$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Contents/Info.plist")"
+
 echo "→ Re-signing..."
 codesign --force --deep --sign - "$APP_PATH"
 
