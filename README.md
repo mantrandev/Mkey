@@ -43,8 +43,10 @@ macOS 13.0+ (Ventura), Apple Silicon. Build arm64-only nên không chạy trên 
 
 ```bash
 brew tap mantrandev/tap
-brew install --cask mantrandev/tap/mkey
+brew install --cask --no-quarantine mantrandev/tap/mkey-telex
 ```
+
+`--no-quarantine` là bắt buộc: app chưa notarize nên nếu để Homebrew gắn quarantine, Gatekeeper sẽ chặn.
 
 **Thủ công:**
 
