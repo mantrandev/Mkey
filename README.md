@@ -19,9 +19,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 - **Phím tắt chuyển ngôn ngữ:** `Ctrl + Space` (mặc định)
 - **Sửa lỗi autocorrect** trên Chrome, Safari, Firefox, Excel
 - **Menu bar SwiftUI** — hiển thị `V` (tiếng Việt) hoặc `E` (tiếng Anh)
-- **Gõ dấu** ở bất kì chỗ nào trong từ ở VNI
-  - MinhBeo1 | MinhBe1o -> MinhBéo
-  - Diu91 | D9i1u -> Đíu
+- **Gõ dấu** ở bất kì chỗ nào trong từ (free mark, mặc định bật)
 
 ## Yêu cầu
 
