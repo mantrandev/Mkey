@@ -26,7 +26,7 @@ Bộ gõ tiếng Việt cho macOS — fork từ [OpenKey](https://github.com/tuy
 
 ## Yêu cầu
 
-macOS 14.0+.
+macOS 13.0+ (Ventura).
 
 **Gatekeeper:** Vì app chưa được notarize, cần bỏ chặn thủ công sau khi cài:  
 *System Settings → Privacy & Security* → tìm `Mkey` → bấm **Open Anyway**.
