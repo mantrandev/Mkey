@@ -151,6 +151,15 @@ bool hasBufferModification() {
     return false;
 }
 
+bool hasNumberInWord() {
+    for (Byte idx = 0; idx < _index; idx++) {
+        if (IS_NUMBER_KEY(CHR(idx))) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool isWordBreak(const vKeyEvent& event, const vKeyEventState& state, const Uint16& data) {
     if (event == vKeyEvent::Mouse)
         return true;
@@ -1192,8 +1201,10 @@ void handleMainKey(const Uint16& data, const bool& isCaps) {
                             break;
                         }
                     }
-                    if ((data == KEY_7 && CHR(VEI) == KEY_A && (VEI-1>=0 ? CHR(VEI-1) != KEY_U : true)) || (data == KEY_8 && (CHR(VEI) == KEY_O || CHR(VEI) == KEY_U)))
+                    if ((data == KEY_7 && CHR(VEI) == KEY_A && (VEI-1>=0 ? CHR(VEI-1) != KEY_U : true)) || (data == KEY_8 && (CHR(VEI) == KEY_O || CHR(VEI) == KEY_U))) {
+                        isChanged = false;
                         break;
+                    }
                 }
                 insertW(keyForAEO, isCaps);
             }
@@ -1497,6 +1508,19 @@ void vKeyHandleEvent(const vKeyEvent& event,
             _spaceCount = 0;
         } else if (_specialChar.size() > 0) {
             saveSpecialChar();
+        }
+
+        if (hasNumberInWord()) {
+            hCode = vDoNothing;
+            hBPC = 0;
+            hNCC = 0;
+            hExt = 3;
+            insertState(data, _isCaps);
+            insertKey(data, _isCaps, false);
+            if (vUseMacro) {
+                hMacroKey.push_back(data | (_isCaps ? CAPS_MASK : 0));
+            }
+            return;
         }
 
         insertState(data, _isCaps); //save state
